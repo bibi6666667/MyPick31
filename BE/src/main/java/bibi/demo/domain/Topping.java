@@ -1,6 +1,5 @@
 package bibi.demo.domain;
 
-import bibi.demo.domain.enums.ToppingCategory;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -24,16 +23,17 @@ public class Topping {
     @JsonProperty("is_choco_coated")
     private boolean isChocoCoated;
 
-    private ToppingCategory toppingCategory;
+    @JsonProperty("topping_type_id")
+    private Long toppingTypeId;
 
     public Topping() {
     }
 
-    public Topping(Long id, String nameKR, String nameEN, boolean isChocoCoated, ToppingCategory toppingCategory) {
+    public Topping(Long id, String nameKR, String nameEN, boolean isChocoCoated, Long toppingTypeId) {
         this.id = id;
         this.nameKR = nameKR;
         this.nameEN = nameEN;
         this.isChocoCoated = isChocoCoated;
-        this.toppingCategory = toppingCategory;
+        this.toppingTypeId = toppingTypeId;
     }
 }

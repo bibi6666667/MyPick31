@@ -1,6 +1,5 @@
 package bibi.demo.domain;
 
-import bibi.demo.domain.enums.SyrupCategory;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -21,15 +20,16 @@ public class Syrup {
     @JsonProperty("name_en")
     private String nameEN;
 
-    private SyrupCategory syrupCategory;
+    @JsonProperty("syrup_type_id")
+    private Long syrupTypeId;
 
     public Syrup() {
     }
 
-    public Syrup(Long id, String nameKR, String nameEN, SyrupCategory syrupCategory) {
+    public Syrup(Long id, String nameKR, String nameEN, Long syrupTypeId) {
         this.id = id;
         this.nameKR = nameKR;
         this.nameEN = nameEN;
-        this.syrupCategory = syrupCategory;
+        this.syrupTypeId = syrupTypeId;
     }
 }

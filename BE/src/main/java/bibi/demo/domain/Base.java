@@ -1,6 +1,5 @@
 package bibi.demo.domain;
 
-import bibi.demo.domain.enums.BaseCategory;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -24,17 +23,18 @@ public class Base {
     private boolean isSherbet;
     private boolean isSorbet;
 
-    private BaseCategory baseCategory;
+    @JsonProperty("base_type_id")
+    private Long baseTypeId;
 
     public Base() {
     }
 
-    public Base(Long id, String nameKR, String nameEN, boolean isSherbet, boolean isSorbet, BaseCategory baseCategory) {
+    public Base(Long id, String nameKR, String nameEN, boolean isSherbet, boolean isSorbet, Long baseTypeId) {
         this.id = id;
         this.nameKR = nameKR;
         this.nameEN = nameEN;
         this.isSherbet = isSherbet;
         this.isSorbet = isSorbet;
-        this.baseCategory = baseCategory;
+        this.baseTypeId = baseTypeId;
     }
 }

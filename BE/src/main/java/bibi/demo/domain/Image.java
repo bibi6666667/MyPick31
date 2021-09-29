@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Getter
@@ -11,13 +13,14 @@ import javax.persistence.Id;
 public class Image {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonProperty("has_image")
     private boolean hasImage;
 
-    @JsonProperty("img_address")
-    private String imgAddress;
+    @JsonProperty("image_address")
+    private String imageAddress;
 
     public Image() {
     }
@@ -27,8 +30,8 @@ public class Image {
         this.hasImage = hasImage;
     }
 
-    public Image(Long id, boolean hasImage, String imgAddress) {
+    public Image(Long id, boolean hasImage, String imageAddress) {
         this(id, hasImage);
-        this.imgAddress = imgAddress;
+        this.imageAddress = imageAddress;
     }
 }

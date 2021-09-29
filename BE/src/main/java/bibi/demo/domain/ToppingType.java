@@ -3,12 +3,14 @@ package bibi.demo.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-@Getter
 @Entity
-@Table(name = "allergen")
-public class Allergen {
+@Getter
+public class ToppingType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,10 +20,10 @@ public class Allergen {
     @JsonProperty("name_en")
     private String nameEN;
 
-    public Allergen() {
+    public ToppingType() {
     }
 
-    public Allergen(Long id, String nameKR, String nameEN) {
+    public ToppingType(Long id, String nameKR, String nameEN) {
         this.id = id;
         this.nameKR = nameKR;
         this.nameEN = nameEN;
