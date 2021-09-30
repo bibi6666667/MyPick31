@@ -16,8 +16,8 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty("has_image")
-    private boolean hasImage;
+    @JsonProperty("flavor_id")
+    private Long flavorId;
 
     @JsonProperty("image_address")
     private String imageAddress;
@@ -25,13 +25,9 @@ public class Image {
     public Image() {
     }
 
-    public Image(Long id, boolean hasImage) {
+    public Image(Long id, Long flavorId, String content) {
         this.id = id;
-        this.hasImage = hasImage;
-    }
-
-    public Image(Long id, boolean hasImage, String imageAddress) {
-        this(id, hasImage);
-        this.imageAddress = imageAddress;
+        this.flavorId = flavorId;
+        this.imageAddress = content;
     }
 }
