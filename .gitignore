@@ -1,5 +1,5 @@
 .DS_Store
-MyPick31/.idea
-MyPick31/BE/.gradle
-MyPick31/BE/src/main/resources/data.sql
-MyPick31/BE/src/main/resources/schema.sql
+.idea
+BE/.gradle
+BE/src/main/resources/data.sql
+BE/src/main/resources/schema.sql
