@@ -20,20 +20,16 @@ public class Topping {
     @JsonProperty("name_en")
     private String nameEN;
 
-    @JsonProperty("is_choco_coated")
-    private boolean isChocoCoated;
-
     @JsonProperty("topping_type_id")
     private Long toppingTypeId;
 
     public Topping() {
     }
 
-    public Topping(Long id, String nameKR, String nameEN, boolean isChocoCoated, Long toppingTypeId) {
+    public Topping(Long id, String nameKR, String nameEN, Long toppingTypeId) {
         this.id = id;
         this.nameKR = nameKR;
         this.nameEN = nameEN;
-        this.isChocoCoated = isChocoCoated;
         this.toppingTypeId = toppingTypeId;
     }
 }
