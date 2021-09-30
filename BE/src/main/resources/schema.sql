@@ -41,7 +41,6 @@ create table `topping` (
     `id` int not null auto_increment,
     `name_kr` varchar(45) not null,
     `name_en` varchar(45) not null,
-    `is_choco_coated` tinyint(1) not null,
     `topping_type_id` varchar(45),
     primary key (`id`),
     foreign key (`topping_type_id`) references `topping_type` (`id`)
@@ -73,6 +72,14 @@ create table `image` (
     primary key (`id`)
 );
 
+drop table if exists `info`;
+create table `info` (
+    `id` int not null auto_increment,
+    `has_info` tinyint(1) not null,
+    `content` varchar(100),
+    primary key(`id`)
+);
+
 drop table if exists `flavor`;
 create table `flavor` (
     `id` int not null auto_increment,
@@ -81,9 +88,10 @@ create table `flavor` (
     `kcal` int not null,
     `is_signature` tinyint(1) not null,
     `is_discontinued` tinyint(1) not null,
-    `info` varchar(100),
+    `info_id` int not null,
     `image_id` int not null,
     primary key (`id`),
+    foreign key (`info_id`) references `info` (`id`),
     foreign key (`image_id`) references `image` (`id`)
 );
 

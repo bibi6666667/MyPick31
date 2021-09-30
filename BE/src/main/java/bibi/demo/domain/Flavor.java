@@ -31,7 +31,8 @@ public class Flavor {
     @JsonProperty("is_discontinued")
     private boolean isDiscontinued;
 
-    private String info;
+    @OneToOne
+    private Info info;
 
     @OneToOne
     private Image image;
