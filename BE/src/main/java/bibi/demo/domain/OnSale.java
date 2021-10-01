@@ -21,4 +21,12 @@ public class OnSale {
 
     private boolean is_on_sale;
 
+    public OnSale() {
+    }
+
+    public OnSale(Long id, Long flavorId, boolean is_on_sale) {
+        this.id = id;
+        this.flavorId = flavorId;
+        this.is_on_sale = is_on_sale;
+    }
 }
