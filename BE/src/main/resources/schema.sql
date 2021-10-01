@@ -64,6 +64,16 @@ create table `allergen` (
     primary key (`id`)
 );
 
+drop table if exists `flavor`;
+create table `flavor` (
+    `id` int not null auto_increment,
+    `name_kr` varchar(45) not null,
+    `name_en` varchar(45) not null,
+    `kcal` int not null,
+    `is_signature` tinyint(1) not null,
+    primary key (`id`)
+);
+
 drop table if exists `info`;
 create table `info` (
     `id` int not null auto_increment,
@@ -82,15 +92,13 @@ create table `image` (
     foreign key (`flavor_id`) references `flavor` (`id`);
 );
 
-drop table if exists `flavor`;
-create table `flavor` (
+drop table if exists `on_sale`;
+create table `on_sale` (
     `id` int not null auto_increment,
-    `name_kr` varchar(45) not null,
-    `name_en` varchar(45) not null,
-    `kcal` int not null,
-    `is_signature` tinyint(1) not null,
-    `is_discontinued` tinyint(1) not null,
-    primary key (`id`)
+    `flavor_id` int not null,
+    `is_on_sale` tinyint(1) not null,
+    primary key (`id`),
+    foreign (`flavor_id`) references `flavor` (`id`);
 );
 
 ------ N:M Tables

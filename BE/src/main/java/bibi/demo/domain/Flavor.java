@@ -37,6 +37,9 @@ public class Flavor {
     @OneToOne
     private Image image;
 
+    @OneToOne
+    private OnSale onSale;
+
     @OneToMany(mappedBy = "flavor")
     private List<FlavorBase> flavorBases = new ArrayList<>();
 
