@@ -1,6 +1,6 @@
 package bibi.demo.dto;
 
-import bibi.demo.domain.Allergen;
+import bibi.demo.domain.type.Allergen;
 import lombok.Getter;
 
 import java.util.List;
