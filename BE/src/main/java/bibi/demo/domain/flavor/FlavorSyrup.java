@@ -1,5 +1,6 @@
-package bibi.demo.domain;
+package bibi.demo.domain.flavor;
 
+import bibi.demo.domain.Syrup;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class FlavorBase {
-
+public class FlavorSyrup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,15 +19,15 @@ public class FlavorBase {
     private Flavor flavor;
 
     @ManyToOne
-    @JoinColumn(name = "base_id")
-    private Base base;
+    @JoinColumn(name = "syrup_id")
+    private Syrup syrup;
 
-    public FlavorBase() {
+    public FlavorSyrup() {
     }
 
-    public FlavorBase(Long id, Flavor flavor, Base base) {
+    public FlavorSyrup(Long id, Flavor flavor, Syrup syrup) {
         this.id = id;
         this.flavor = flavor;
-        this.base = base;
+        this.syrup = syrup;
     }
 }
