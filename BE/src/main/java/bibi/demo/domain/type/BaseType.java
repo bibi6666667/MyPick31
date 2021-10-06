@@ -1,4 +1,4 @@
-package bibi.demo.domain;
+package bibi.demo.domain.type;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
