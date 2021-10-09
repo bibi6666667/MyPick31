@@ -16,17 +16,13 @@ public class Info {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty("flavor_id")
-    private Long flavorId;
-
     private String content;
 
     public Info() {
     }
 
-    public Info(Long id, Long flavorId, String content) {
+    public Info(Long id, String content) {
         this.id = id;
-        this.flavorId = flavorId;
         this.content = content;
     }
 }

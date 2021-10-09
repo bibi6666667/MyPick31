@@ -1,22 +1,29 @@
-package bibi.demo.domain.type;
+package bibi.demo.domain;
 
+import bibi.demo.domain.flavor.FlavorAllergen;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
 @Entity
-@Table(name = "allergen")
+@Getter
+@Setter
 public class Allergen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty("name_kr")
+    @Column(name = "name_kr")
     private String nameKR;
-    @JsonProperty("name_en")
+    @Column(name = "name_en")
     private String nameEN;
+
+    @OneToMany(mappedBy = "allergen")
+    private List<FlavorAllergen> flavorAllergenList = new ArrayList<>();
 
     public Allergen() {
     }
