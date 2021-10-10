@@ -16,21 +16,13 @@ public class Info {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty("has_info")
-    private boolean hasInfo;
-
     private String content;
 
     public Info() {
     }
 
-    public Info(Long id, boolean hasInfo) {
+    public Info(Long id, String content) {
         this.id = id;
-        this.hasInfo = hasInfo;
-    }
-
-    public Info(Long id, boolean hasInfo, String content) {
-        this(id, hasInfo);
         this.content = content;
     }
 }

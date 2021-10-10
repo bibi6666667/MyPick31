@@ -1,30 +1,39 @@
 package bibi.demo.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import bibi.demo.domain.flavor.FlavorBase;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
 @Entity
+@Getter
+@Setter
+@ToString
 public class Base {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty("name_kr")
+    @Column(name = "name_kr")
     private String nameKR;
-    @JsonProperty("name_en")
+    @Column(name = "name_en")
     private String nameEN;
 
     private boolean isSherbet;
     private boolean isSorbet;
 
-    @JsonProperty("base_type_id")
+    @Column(name = "base_type_id")
     private Long baseTypeId;
+
+    // @JsonIgnore
+    @OneToMany(mappedBy="base")
+    private List<FlavorBase> flavorBaseList = new ArrayList<>();
 
     public Base() {
     }
@@ -38,3 +47,4 @@ public class Base {
         this.baseTypeId = baseTypeId;
     }
 }
+

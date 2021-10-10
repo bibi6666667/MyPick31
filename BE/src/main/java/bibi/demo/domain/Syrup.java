@@ -1,27 +1,32 @@
 package bibi.demo.domain;
 
+import bibi.demo.domain.flavor.FlavorSyrup;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
 @Entity
+@Getter
+@Setter
 public class Syrup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty("name_kr")
+    @Column(name = "name_kr")
     private String nameKR;
-    @JsonProperty("name_en")
+    @Column(name = "name_en")
     private String nameEN;
 
-    @JsonProperty("syrup_type_id")
+    @Column(name = "syrup_type_id")
     private Long syrupTypeId;
+
+    @OneToMany(mappedBy = "syrup")
+    private List<FlavorSyrup> flavorSyrupList = new ArrayList<>();
 
     public Syrup() {
     }
