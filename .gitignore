@@ -1,5 +1,6 @@
 .DS_Store
 .idea
-BE/.gradle
+*.sql
+BE/.gradle/
 BE/src/main/resources/data.sql
 BE/src/main/resources/schema.sql
