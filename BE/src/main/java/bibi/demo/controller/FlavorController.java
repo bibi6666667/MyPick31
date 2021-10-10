@@ -1,6 +1,6 @@
 package bibi.demo.controller;
 
-import bibi.demo.dto.FlavorResponse;
+import bibi.demo.response.FlavorResponse;
 import bibi.demo.service.FlavorService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
