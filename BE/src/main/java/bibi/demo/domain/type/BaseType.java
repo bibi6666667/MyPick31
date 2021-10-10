@@ -4,10 +4,7 @@ package bibi.demo.domain.type;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -16,9 +13,9 @@ public class BaseType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty("name_kr")
+    @Column(name = "name_kr")
     private String nameKR;
-    @JsonProperty("name_en")
+    @Column(name = "name_en")
     private String nameEN;
 
     public BaseType() {
