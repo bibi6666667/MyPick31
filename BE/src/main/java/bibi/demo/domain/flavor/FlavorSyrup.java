@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "flavor_syrup")
 @Getter
 @Setter
 public class FlavorSyrup {

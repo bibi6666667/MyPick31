@@ -1,12 +1,13 @@
 package bibi.demo.domain.flavor;
 
-import bibi.demo.domain.type.Allergen;
+import bibi.demo.domain.Allergen;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "flavor_allergen")
 @Getter
 @Setter
 public class FlavorAllergen {
