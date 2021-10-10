@@ -38,6 +38,11 @@ public class FlavorService {
         return flavorsToFlavorResponses(flavors);
     }
 
+    public List<FlavorResponse> getFlavorsByKeywordKR(String keywordKR) {
+        List<Flavor> flavors = flavorRepository.findByNameKRContaining(keywordKR);
+        return flavorsToFlavorResponses(flavors);
+    }
+
     private List<FlavorResponse> flavorsToFlavorResponses(List<Flavor> flavors) {
         List<FlavorResponse> result = new ArrayList<>();
         for (Flavor flavor : flavors) {

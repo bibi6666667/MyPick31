@@ -11,4 +11,6 @@ public interface FlavorRepository extends CrudRepository<Flavor, Long> {
 
     @Override
     List<Flavor> findAll();
+
+    List<Flavor> findByNameKRContaining(String nameKR);
 }
