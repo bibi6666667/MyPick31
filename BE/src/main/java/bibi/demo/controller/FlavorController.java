@@ -29,4 +29,8 @@ public class FlavorController {
         return flavorService.getFlavorsByKeywordKR(keywordKR);
     }
 
+    @GetMapping("/en/{keywordEN}")
+    public List<FlavorResponse> showFlavorByKeywordEN(@PathVariable("keywordEN") String keywordEN) {
+        return flavorService.getFlavorsByKeywordEN(keywordEN);
+    }
 }

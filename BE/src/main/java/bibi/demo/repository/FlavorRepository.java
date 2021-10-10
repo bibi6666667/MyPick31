@@ -13,4 +13,6 @@ public interface FlavorRepository extends CrudRepository<Flavor, Long> {
     List<Flavor> findAll();
 
     List<Flavor> findByNameKRContaining(String nameKR);
+
+    List<Flavor> findByNameENContainingIgnoreCase(String nameEN);
 }

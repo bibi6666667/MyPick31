@@ -43,6 +43,11 @@ public class FlavorService {
         return flavorsToFlavorResponses(flavors);
     }
 
+    public List<FlavorResponse> getFlavorsByKeywordEN(String keywordEN) {
+        List<Flavor> flavors = flavorRepository.findByNameENContainingIgnoreCase(keywordEN);
+        return flavorsToFlavorResponses(flavors);
+    }
+
     private List<FlavorResponse> flavorsToFlavorResponses(List<Flavor> flavors) {
         List<FlavorResponse> result = new ArrayList<>();
         for (Flavor flavor : flavors) {
