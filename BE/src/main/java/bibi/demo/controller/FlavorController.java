@@ -33,4 +33,9 @@ public class FlavorController {
     public List<FlavorResponse> showFlavorByKeywordEN(@PathVariable("keywordEN") String keywordEN) {
         return flavorService.getFlavorsByKeywordEN(keywordEN);
     }
+
+    @GetMapping("/kr/asc")
+    public List<FlavorResponse> showFlavorOrderByNameKR() {
+        return flavorService.getFlavorsOrderByNameKR();
+    }
 }

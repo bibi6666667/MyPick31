@@ -7,6 +7,7 @@ import bibi.demo.domain.Topping;
 import bibi.demo.domain.flavor.*;
 import bibi.demo.repository.*;
 import bibi.demo.response.*;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,6 +46,11 @@ public class FlavorService {
 
     public List<FlavorResponse> getFlavorsByKeywordEN(String keywordEN) {
         List<Flavor> flavors = flavorRepository.findByNameENContainingIgnoreCase(keywordEN);
+        return flavorsToFlavorResponses(flavors);
+    }
+
+    public List<FlavorResponse> getFlavorsOrderByNameKR() {
+        List<Flavor> flavors = flavorRepository.findAll(Sort.by("nameKR"));
         return flavorsToFlavorResponses(flavors);
     }
 
