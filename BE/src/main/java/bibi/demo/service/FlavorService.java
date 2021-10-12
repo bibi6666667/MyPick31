@@ -59,6 +59,11 @@ public class FlavorService {
         return flavorsToFlavorResponses(flavors);
     }
 
+    public List<FlavorResponse> getFlavorsOrderByKcal() {
+        List<Flavor> flavors = flavorRepository.findAll(Sort.by("kcal"));
+        return flavorsToFlavorResponses(flavors);
+    }
+
     private List<FlavorResponse> flavorsToFlavorResponses(List<Flavor> flavors) {
         List<FlavorResponse> result = new ArrayList<>();
         for (Flavor flavor : flavors) {

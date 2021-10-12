@@ -43,4 +43,9 @@ public class FlavorController {
     public List<FlavorResponse> showFlavorOrderByNameEN() {
         return flavorService.getFlavorsOrderByNameEN();
     }
+
+    @GetMapping("/order/kcal")
+    public List<FlavorResponse> showFlavorOrderByKcal() {
+        return flavorService.getFlavorsOrderByKcal();
+    }
 }
