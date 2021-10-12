@@ -54,6 +54,11 @@ public class FlavorService {
         return flavorsToFlavorResponses(flavors);
     }
 
+    public List<FlavorResponse> getFlavorsOrderByNameEN() {
+        List<Flavor> flavors = flavorRepository.findAll(Sort.by("nameEN"));
+        return flavorsToFlavorResponses(flavors);
+    }
+
     private List<FlavorResponse> flavorsToFlavorResponses(List<Flavor> flavors) {
         List<FlavorResponse> result = new ArrayList<>();
         for (Flavor flavor : flavors) {

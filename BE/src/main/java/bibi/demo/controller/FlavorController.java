@@ -39,4 +39,8 @@ public class FlavorController {
         return flavorService.getFlavorsOrderByNameKR();
     }
 
+    @GetMapping("/order/en")
+    public List<FlavorResponse> showFlavorOrderByNameEN() {
+        return flavorService.getFlavorsOrderByNameEN();
+    }
 }
