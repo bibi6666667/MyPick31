@@ -3,6 +3,7 @@ package bibi.demo.controller;
 import bibi.demo.response.FlavorResponse;
 import bibi.demo.service.FlavorService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +22,30 @@ public class FlavorController {
     @GetMapping()
     public List<FlavorResponse> showAllFlavor() {
         return flavorService.getAllFlavors();
+    }
+
+    @GetMapping("/kr/{keywordKR}")
+    public List<FlavorResponse> showFlavorByKeywordKR(@PathVariable("keywordKR") String keywordKR) {
+        return flavorService.getFlavorsByKeywordKR(keywordKR);
+    }
+
+    @GetMapping("/en/{keywordEN}")
+    public List<FlavorResponse> showFlavorByKeywordEN(@PathVariable("keywordEN") String keywordEN) {
+        return flavorService.getFlavorsByKeywordEN(keywordEN);
+    }
+
+    @GetMapping("/order/kr")
+    public List<FlavorResponse> showFlavorOrderByNameKR() {
+        return flavorService.getFlavorsOrderByNameKR();
+    }
+
+    @GetMapping("/order/en")
+    public List<FlavorResponse> showFlavorOrderByNameEN() {
+        return flavorService.getFlavorsOrderByNameEN();
+    }
+
+    @GetMapping("/order/kcal")
+    public List<FlavorResponse> showFlavorOrderByKcal() {
+        return flavorService.getFlavorsOrderByKcal();
     }
 }
