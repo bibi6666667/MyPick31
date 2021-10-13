@@ -45,4 +45,13 @@ public class FlavorController {
     public List<FlavorResponse> showFlavorOrderByKcal() {
         return flavorService.getFlavorsOrderByKcal();
     }
+
+    @GetMapping(params = {"baseType", "toppingType", "syrupType", "allergenType"})
+    public List<FlavorResponse> showFlavorFiltered(@RequestParam("baseType") String baseType,
+                                                   @RequestParam("toppingType") String toppingType,
+                                                   @RequestParam("syrupType") String syrupType,
+                                                   @RequestParam("allergenType") String allergenType) {
+        return flavorService.getFlavorsFilteredBy(baseType, toppingType, syrupType, allergenType);
+    }
+
 }

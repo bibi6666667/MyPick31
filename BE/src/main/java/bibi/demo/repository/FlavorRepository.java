@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FlavorRepository extends CrudRepository<Flavor, Long> {
@@ -18,4 +19,7 @@ public interface FlavorRepository extends CrudRepository<Flavor, Long> {
     List<Flavor> findByNameENContainingIgnoreCase(String nameEN);
 
     List<Flavor> findAll(Sort sort);
+
+    @Override
+    Optional<Flavor> findById(Long id);
 }
