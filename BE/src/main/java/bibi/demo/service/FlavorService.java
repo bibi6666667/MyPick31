@@ -28,6 +28,7 @@ public class FlavorService {
     private final FlavorBaseRepository flavorBaseRepository;
     private final FlavorToppingRepository flavorToppingRepository;
     private final FlavorSyrupRepository flavorSyrupRepository;
+    private final FlavorAllergenRepository flavorAllergenRepository;
     private final BaseTypeRepository baseTypeRepository;
     private final ToppingTypeRepository toppingTypeRepository;
     private final SyrupTypeRepository syrupTypeRepository;
@@ -40,6 +41,7 @@ public class FlavorService {
                          FlavorBaseRepository flavorBaseRepository,
                          FlavorToppingRepository flavorToppingRepository,
                          FlavorSyrupRepository flavorSyrupRepository,
+                         FlavorAllergenRepository flavorAllergenRepository,
                          BaseTypeRepository baseTypeRepository,
                          ToppingTypeRepository toppingTypeRepository,
                          SyrupTypeRepository syrupTypeRepository) {
@@ -51,6 +53,7 @@ public class FlavorService {
         this.flavorBaseRepository = flavorBaseRepository;
         this.flavorToppingRepository = flavorToppingRepository;
         this.flavorSyrupRepository = flavorSyrupRepository;
+        this.flavorAllergenRepository = flavorAllergenRepository;
         this.baseTypeRepository = baseTypeRepository;
         this.toppingTypeRepository = toppingTypeRepository;
         this.syrupTypeRepository = syrupTypeRepository;
@@ -86,17 +89,19 @@ public class FlavorService {
         return flavorsToFlavorResponses(flavors);
     }
 
-    public List<FlavorResponse> getAllFlavorsFiltered(String baseType, String toppingType, String syrupType, String allergenType) {
+    public List<FlavorResponse> getAllFlavorsFiltered(String baseType, String toppingType, String syrupType, String allergen) {
 
         //System.out.println(baseType.equals("")); - 아무 파라미터 없이 검색할 때
         List<Flavor> flavors = new ArrayList<>();
         List<Flavor> flavorsFilteredByBaseType = getFlavorsFilteredByBaseType(baseType);
         List<Flavor> flavorsFilteredByToppingType = getFlavorsFilteredByToppingType(toppingType);
         List<Flavor> flavorsFilteredBySyrupType = getFlavorsFilteredBySyrupType(syrupType);
+        List<Flavor> flavorsFilteredByAllergen = getFlavorsFilteredByAllergen(allergen);
         // 베이스 토핑 시럽 알러전 중 선택된 그룹 모두의 "교집합"만 결과로 보내야 함
         flavors.addAll(flavorsFilteredByBaseType);
         flavors.addAll(flavorsFilteredByToppingType);
         flavors.addAll(flavorsFilteredBySyrupType);
+        flavors.addAll(flavorsFilteredByAllergen);
         return flavorsToFlavorResponses(flavors);
     }
 
@@ -167,6 +172,24 @@ public class FlavorService {
             Flavor flavor = flavorRepository.findById(flavorSyrup.getFlavor().getId()).orElseThrow(NoSuchElementException::new);
             if (!flavors.contains(flavor)) {
                 System.out.println(flavorSyrup.getSyrup().getNameKR() + "를 시럽으로 갖는 플레이버 " + flavor.getNameKR());
+                flavors.add(flavor);
+            }
+        }
+        return flavors;
+    }
+
+    private List<Flavor> getFlavorsFilteredByAllergen(String allergen) {
+        List<Flavor> flavors = new ArrayList<>();
+        if (allergen.equals("")) return flavors;
+
+        Long allergenId = allergenRepository.findIdByNameKR(allergen).orElseThrow(NoSuchElementException::new);
+
+        List<FlavorAllergen> flavorAllergens = flavorAllergenRepository.findByAllergenId(allergenId);
+
+        for (FlavorAllergen flavorAllergen : flavorAllergens) {
+            Flavor flavor = flavorRepository.findById(flavorAllergen.getFlavor().getId()).orElseThrow(NoSuchElementException::new);
+            if (!flavors.contains(flavor)) {
+                System.out.println(flavorAllergen.getAllergen().getNameKR() + " 알레르기 성분을 갖는 플레이버 " + flavor.getNameKR());
                 flavors.add(flavor);
             }
         }
