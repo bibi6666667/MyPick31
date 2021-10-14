@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface BaseTypeRepository extends CrudRepository<BaseType, Long> {
 
-    @Query(value = "SELECT bt.id FROM base_type bt WHERE bt.name_kr = :nameKR ", nativeQuery = true)
+    @Query(value = "SELECT bt.id FROM base_type bt WHERE bt.name_kr = :nameKR", nativeQuery = true)
     Optional<Long> findIdByNameKR(@Param("nameKR") String nameKR);
 }
