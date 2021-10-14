@@ -12,5 +12,5 @@ import java.util.List;
 public interface FlavorBaseRepository extends CrudRepository<FlavorBase, Long> {
 
     @Query(value = "SELECT fb.id, fb.flavor_id, fb.base_id FROM flavor_base fb WHERE fb.base_id = :baseId", nativeQuery = true)
-    List<FlavorBase> findByBaseId(@Param("baseId") Long baseId);
+    List<FlavorBase> findFlavorBasesByBaseId(@Param("baseId") Long baseId);
 }
