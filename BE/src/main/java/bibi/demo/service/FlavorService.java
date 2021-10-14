@@ -105,7 +105,7 @@ public class FlavorService {
     private List<BaseResponse> flavorBasesToBaseResponses(List<FlavorBase> flavorBases) {
         List<BaseResponse> result = new ArrayList<>();
         for (FlavorBase flavorBase : flavorBases) {
-            Base base = baseRepository.findBaseById(flavorBase.getBase().getId());
+            Base base = baseRepository.findById(flavorBase.getBase().getId()).orElseThrow(NoSuchElementException::new);
             result.add(BaseResponse.toBaseResponse(base));
         }
         return result;
@@ -114,7 +114,7 @@ public class FlavorService {
     private List<ToppingResponse> flavorToppingsToToppingResponses(List<FlavorTopping> flavorToppings) {
         List<ToppingResponse> result = new ArrayList<>();
         for (FlavorTopping flavorTopping : flavorToppings) {
-            Topping topping = toppingRepository.findToppingById(flavorTopping.getTopping().getId());
+            Topping topping = toppingRepository.findById(flavorTopping.getTopping().getId()).orElseThrow(NoSuchElementException::new);
             result.add(ToppingResponse.toToppingResponse(topping));
         }
         return result;
@@ -123,7 +123,7 @@ public class FlavorService {
     private List<SyrupResponse> flavorSyrupsToSyrupResponses(List<FlavorSyrup> flavorSyrups) {
         List<SyrupResponse> result = new ArrayList<>();
         for (FlavorSyrup flavorSyrup : flavorSyrups) {
-            Syrup syrup = syrupRepository.findSyrupById(flavorSyrup.getSyrup().getId());
+            Syrup syrup = syrupRepository.findById(flavorSyrup.getSyrup().getId()).orElseThrow(NoSuchElementException::new);
             result.add(SyrupResponse.toSyrupResponse(syrup));
         }
         return result;
@@ -132,7 +132,7 @@ public class FlavorService {
     private List<AllergenResponse> flavorAllergensToAllergenResponses(List<FlavorAllergen> flavorAllergens) {
         List<AllergenResponse> result = new ArrayList<>();
         for (FlavorAllergen flavorAllergen : flavorAllergens) {
-            Allergen allergen = allergenRepository.findAllergenById(flavorAllergen.getAllergen().getId());
+            Allergen allergen = allergenRepository.findById(flavorAllergen.getAllergen().getId()).orElseThrow(NoSuchElementException::new);
             result.add(AllergenResponse.toAllergenResponse(allergen));
         }
         return result;

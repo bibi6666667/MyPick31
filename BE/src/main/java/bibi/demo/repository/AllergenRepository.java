@@ -4,8 +4,11 @@ import bibi.demo.domain.Allergen;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AllergenRepository extends CrudRepository<Allergen, Long> {
 
-    public Allergen findAllergenById(Long id);
+    @Override
+    Optional<Allergen> findById(Long id);
 }
