@@ -7,6 +7,7 @@ import bibi.demo.domain.Topping;
 import bibi.demo.domain.flavor.*;
 import bibi.demo.repository.*;
 import bibi.demo.repository.type.BaseTypeRepository;
+import bibi.demo.repository.type.ToppingTypeRepository;
 import bibi.demo.response.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,9 @@ public class FlavorService {
     private final SyrupRepository syrupRepository;
     private final AllergenRepository allergenRepository;
     private final FlavorBaseRepository flavorBaseRepository;
+    private final FlavorToppingRepository flavorToppingRepository;
     private final BaseTypeRepository baseTypeRepository;
+    private final ToppingTypeRepository toppingTypeRepository;
 
     public FlavorService(FlavorRepository flavorRepository,
                          BaseRepository baseRepository,
@@ -32,14 +35,18 @@ public class FlavorService {
                          SyrupRepository syrupRepository,
                          AllergenRepository allergenRepository,
                          FlavorBaseRepository flavorBaseRepository,
-                         BaseTypeRepository baseTypeRepository) {
+                         FlavorToppingRepository flavorToppingRepository,
+                         BaseTypeRepository baseTypeRepository,
+                         ToppingTypeRepository toppingTypeRepository) {
         this.flavorRepository = flavorRepository;
         this.baseRepository = baseRepository;
         this.toppingRepository = toppingRepository;
         this.syrupRepository = syrupRepository;
         this.allergenRepository = allergenRepository;
         this.flavorBaseRepository = flavorBaseRepository;
+        this.flavorToppingRepository = flavorToppingRepository;
         this.baseTypeRepository = baseTypeRepository;
+        this.toppingTypeRepository = toppingTypeRepository;
     }
 
     public List<FlavorResponse> getAllFlavors() {
@@ -77,8 +84,10 @@ public class FlavorService {
         //System.out.println(baseType.equals("")); - 아무 파라미터 없이 검색할 때
         List<Flavor> flavors = new ArrayList<>();
         List<Flavor> flavorsFilteredByBaseType = getFlavorsFilteredByBaseType(baseType);
+        List<Flavor> flavorsFilteredByToppingType = getFlavorsFilteredByToppingType(toppingType);
         // 베이스 토핑 시럽 알러전 중 선택된 그룹 모두의 "교집합"만 결과로 보내야 함
         flavors.addAll(flavorsFilteredByBaseType);
+        flavors.addAll(flavorsFilteredByToppingType);
         return flavorsToFlavorResponses(flavors);
     }
 
@@ -97,11 +106,35 @@ public class FlavorService {
             List<FlavorBase> flavorBasesByBaseId = flavorBaseRepository.findFlavorBasesByBaseId(base.getId());
             flavorBases.addAll(flavorBasesByBaseId);
         }
+
         // 플레이버베이스로 그 베이스들을 갖는 플레이버 찾기
         for (FlavorBase flavorBase : flavorBases) {
             Flavor flavor = flavorRepository.findById(flavorBase.getFlavor().getId()).orElseThrow(NoSuchElementException::new);
             if (!flavors.contains(flavor)) { // 중복 제거
                 System.out.println(flavorBase.getBase().getNameKR() + "를 베이스로 갖는 플레이버 " + flavor.getNameKR());
+                flavors.add(flavor);
+            }
+        }
+        return flavors;
+    }
+
+    private List<Flavor> getFlavorsFilteredByToppingType(String toppingType) {
+        List<Flavor> flavors = new ArrayList<>();
+        if (toppingType.equals("")) return flavors;
+
+        Long toppingTypeId = toppingTypeRepository.findIdByNameKR(toppingType).orElseThrow(NoSuchElementException::new);
+        List<Topping> toppings = toppingRepository.findByToppingTypeId(toppingTypeId);
+
+        List<FlavorTopping> flavorToppings = new ArrayList<>();
+        for (Topping topping : toppings) {
+            List<FlavorTopping> flavorToppingsByToppingId = flavorToppingRepository.findByToppingId(topping.getId());
+            flavorToppings.addAll(flavorToppingsByToppingId);
+        }
+
+        for (FlavorTopping flavorTopping : flavorToppings) {
+            Flavor flavor = flavorRepository.findById(flavorTopping.getFlavor().getId()).orElseThrow(NoSuchElementException::new);
+            if (!flavors.contains(flavor)) {
+                System.out.println(flavorTopping.getTopping().getNameKR() + "를 토핑으로 갖는 플레이버 " + flavor.getNameKR());
                 flavors.add(flavor);
             }
         }
