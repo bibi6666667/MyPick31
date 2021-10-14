@@ -51,7 +51,7 @@ public class FlavorController {
                                                    @RequestParam("toppingType") String toppingType,
                                                    @RequestParam("syrupType") String syrupType,
                                                    @RequestParam("allergenType") String allergenType) {
-        return flavorService.getFlavorsFilteredBy(baseType, toppingType, syrupType, allergenType);
+        return flavorService.getAllFlavorsFiltered(baseType, toppingType, syrupType, allergenType);
     }
 
 }
