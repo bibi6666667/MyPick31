@@ -91,42 +91,61 @@ public class FlavorService {
 
     public List<FlavorResponse> getAllFlavorsFiltered(String baseType1, String baseType2, String toppingType1, String toppingType2,
                                                       String syrupType1, String syrupType2, String allergen1, String allergen2) {
-        List<Flavor> flavors = new ArrayList<>();
-        List<Flavor> flavorsFilteredByBaseType = new ArrayList<>();
-        List<Flavor> flavorsFilteredByBaseType2 = new ArrayList<>();
-        List<Flavor> flavorsFilteredByToppingType = new ArrayList<>();
-        List<Flavor> flavorsFilteredBySyrupType = new ArrayList<>();
-        List<Flavor> flavorsFilteredByAllergen = new ArrayList<>();
-
-        if (!baseType1.equals("")) {
-            flavorsFilteredByBaseType = getFlavorsFilteredByBaseType(baseType1);
-        }
-        if (!baseType2.equals("")) {
-            flavorsFilteredByBaseType2 = getFlavorsFilteredByBaseType(baseType2);
-        }
-        if (!toppingType1.equals("")) {
-            flavorsFilteredByToppingType = getFlavorsFilteredByToppingType(toppingType1);
-        }
-        if (!syrupType1.equals("")) {
-            flavorsFilteredBySyrupType = getFlavorsFilteredBySyrupType(syrupType1);
-        }
-        if (!allergen1.equals("")) {
-            flavorsFilteredByAllergen = getFlavorsFilteredByAllergen(allergen1);
-        }
-
         // TODO : 타입1이 비어 있고 타입2만 있을 때 예외 발생시키기
 
-        // 베이스 토핑 시럽 알러전 중 선택된 그룹 모두의 "교집합"만 결과로 보내야 함
+        if (baseType1.equals("") && baseType2.equals("") && toppingType1.equals("") && toppingType2.equals("")
+        && syrupType1.equals("") && syrupType2.equals("") && allergen1.equals("") && allergen2.equals("")) {
+            getAllFlavors();
+        }
+
+        List<Flavor> result = new ArrayList<>();
+        List<Flavor> flavorsFilteredByBaseType = getFlavorsFilteredByBaseType(baseType1);
+        List<Flavor> flavorsFilteredByBaseType2 = getFlavorsFilteredByBaseType(baseType2);
+        List<Flavor> flavorsFilteredByToppingType = getFlavorsFilteredByToppingType(toppingType1);
+        List<Flavor> flavorsFilteredByToppingType2 = getFlavorsFilteredByToppingType(toppingType2);
+        List<Flavor> flavorsFilteredBySyrupType = getFlavorsFilteredBySyrupType(syrupType1);
+        List<Flavor> flavorsFilteredBySyrupType2 = getFlavorsFilteredBySyrupType(syrupType2);
+        List<Flavor> flavorsFilteredByAllergen = getFlavorsFilteredByAllergen(allergen1);
+        List<Flavor> flavorsFilteredByAllergen2 = getFlavorsFilteredByAllergen(allergen2);
+
+        // 타입끼리의 교집합 구하기
         if (!baseType1.equals("") && !baseType2.equals("")) {
             flavorsFilteredByBaseType.retainAll(flavorsFilteredByBaseType2);
         }
+        if (!toppingType1.equals("") && !toppingType2.equals("")) {
+            flavorsFilteredByToppingType.retainAll(flavorsFilteredByToppingType2);
+        }
+        if (!syrupType1.equals("") && !syrupType2.equals("")) {
+            flavorsFilteredBySyrupType.retainAll(flavorsFilteredBySyrupType2);
+        }
+        if (!allergen1.equals("") && !allergen2.equals("")) {
+            flavorsFilteredByAllergen.retainAll(flavorsFilteredByAllergen2);
+        }
+
+        // i) 베이스타입/토핑타입/시럽타입/알러전 중 한 개만 입력
+        // ii) 베이스타입/토핑타입/시럽타입/알러전 중 두 개 입력
+        // iii) 베이스타입/토핑타입/시럽타입/알러전 중 세 개 입력
+
+
+        // iv) 베이스타입/토핑타입/시럽타입/알러전 모두 입력
+        if (!baseType1.equals("") && !baseType2.equals("") && !toppingType1.equals("") && !toppingType2.equals("")
+                && !syrupType1.equals("") && !syrupType2.equals("") && !allergen1.equals("") && !allergen2.equals("")) {
+            flavorsFilteredByBaseType.retainAll(flavorsFilteredByToppingType);
+            flavorsFilteredByBaseType.retainAll(flavorsFilteredBySyrupType);
+            flavorsFilteredByBaseType.retainAll(flavorsFilteredByAllergen);
+            result.addAll(flavorsFilteredByBaseType);
+        }
+        flavorsFilteredByBaseType.retainAll(flavorsFilteredByToppingType);
+        flavorsFilteredByBaseType.retainAll(flavorsFilteredBySyrupType);
+        flavorsFilteredByBaseType.retainAll(flavorsFilteredByAllergen);
+        result.addAll(flavorsFilteredByBaseType);
 
         // TODO : 판매 중인 플레이버를 앞쪽으로 정렬
-        flavors.addAll(flavorsFilteredByBaseType);
-        flavors.addAll(flavorsFilteredByToppingType);
-        flavors.addAll(flavorsFilteredBySyrupType);
-        flavors.addAll(flavorsFilteredByAllergen);
-        return flavorsToFlavorResponses(flavors);
+//        result.addAll(flavorsFilteredByBaseType);
+//        result.addAll(flavorsFilteredByToppingType);
+//        result.addAll(flavorsFilteredBySyrupType);
+//        result.addAll(flavorsFilteredByAllergen);
+        return flavorsToFlavorResponses(result);
     }
 
     private List<Flavor> getFlavorsFilteredByBaseType(String baseType) {
