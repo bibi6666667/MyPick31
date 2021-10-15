@@ -46,12 +46,18 @@ public class FlavorController {
         return flavorService.getFlavorsOrderByKcal();
     }
 
-    @GetMapping(params = {"baseType", "toppingType", "syrupType", "allergen"})
-    public List<FlavorResponse> showFlavorFiltered(@RequestParam("baseType") String baseType,
-                                                   @RequestParam("toppingType") String toppingType,
-                                                   @RequestParam("syrupType") String syrupType,
-                                                   @RequestParam("allergen") String allergen) {
-        return flavorService.getAllFlavorsFiltered(baseType, toppingType, syrupType, allergen);
+    @GetMapping(params = {"baseType1", "baseType2", "toppingType1", "toppingType2",
+            "syrupType1", "syrupType2", "allergen1", "allergen2"})
+    public List<FlavorResponse> showFlavorFiltered(@RequestParam("baseType1") String baseType1,
+                                                   @RequestParam("baseType2") String baseType2,
+                                                   @RequestParam("toppingType1") String toppingType1,
+                                                   @RequestParam("toppingType2") String toppingType2,
+                                                   @RequestParam("syrupType1") String syrupType1,
+                                                   @RequestParam("syrupType2") String syrupType2,
+                                                   @RequestParam("allergen1") String allergen1,
+                                                   @RequestParam("allergen2") String allergen2) {
+        return flavorService.getAllFlavorsFiltered(baseType1, baseType2, toppingType1, toppingType2,
+                syrupType1, syrupType2, allergen1, allergen2);
     }
 
 }
