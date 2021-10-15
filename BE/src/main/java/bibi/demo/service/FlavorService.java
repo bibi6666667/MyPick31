@@ -89,15 +89,39 @@ public class FlavorService {
         return flavorsToFlavorResponses(flavors);
     }
 
-    public List<FlavorResponse> getAllFlavorsFiltered(String baseType, String toppingType, String syrupType, String allergen) {
-
-        //System.out.println(baseType.equals("")); - 아무 파라미터 없이 검색할 때
+    public List<FlavorResponse> getAllFlavorsFiltered(String baseType1, String baseType2, String toppingType1, String toppingType2,
+                                                      String syrupType1, String syrupType2, String allergen1, String allergen2) {
         List<Flavor> flavors = new ArrayList<>();
-        List<Flavor> flavorsFilteredByBaseType = getFlavorsFilteredByBaseType(baseType);
-        List<Flavor> flavorsFilteredByToppingType = getFlavorsFilteredByToppingType(toppingType);
-        List<Flavor> flavorsFilteredBySyrupType = getFlavorsFilteredBySyrupType(syrupType);
-        List<Flavor> flavorsFilteredByAllergen = getFlavorsFilteredByAllergen(allergen);
+        List<Flavor> flavorsFilteredByBaseType = new ArrayList<>();
+        List<Flavor> flavorsFilteredByBaseType2 = new ArrayList<>();
+        List<Flavor> flavorsFilteredByToppingType = new ArrayList<>();
+        List<Flavor> flavorsFilteredBySyrupType = new ArrayList<>();
+        List<Flavor> flavorsFilteredByAllergen = new ArrayList<>();
+
+        if (!baseType1.equals("")) {
+            flavorsFilteredByBaseType = getFlavorsFilteredByBaseType(baseType1);
+        }
+        if (!baseType2.equals("")) {
+            flavorsFilteredByBaseType2 = getFlavorsFilteredByBaseType(baseType2);
+        }
+        if (!toppingType1.equals("")) {
+            flavorsFilteredByToppingType = getFlavorsFilteredByToppingType(toppingType1);
+        }
+        if (!syrupType1.equals("")) {
+            flavorsFilteredBySyrupType = getFlavorsFilteredBySyrupType(syrupType1);
+        }
+        if (!allergen1.equals("")) {
+            flavorsFilteredByAllergen = getFlavorsFilteredByAllergen(allergen1);
+        }
+
+        // TODO : 타입1이 비어 있고 타입2만 있을 때 예외 발생시키기
+
         // 베이스 토핑 시럽 알러전 중 선택된 그룹 모두의 "교집합"만 결과로 보내야 함
+        if (!baseType1.equals("") && !baseType2.equals("")) {
+            flavorsFilteredByBaseType.retainAll(flavorsFilteredByBaseType2);
+        }
+
+        // TODO : 판매 중인 플레이버를 앞쪽으로 정렬
         flavors.addAll(flavorsFilteredByBaseType);
         flavors.addAll(flavorsFilteredByToppingType);
         flavors.addAll(flavorsFilteredBySyrupType);
