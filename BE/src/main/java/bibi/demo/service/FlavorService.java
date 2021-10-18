@@ -64,32 +64,32 @@ public class FlavorService {
 
     public List<FlavorResponse> getAllFlavors() {
         List<Flavor> flavors = flavorRepository.findAll();
-        return flavorsToFlavorResponses(flavors);
+        return flavorsToFlavorResponses(orderFlavorsByOnSale(flavors));
     }
 
     public List<FlavorResponse> getFlavorsByKeywordKR(String keywordKR) {
         List<Flavor> flavors = flavorRepository.findByNameKRContaining(keywordKR);
-        return flavorsToFlavorResponses(flavors);
+        return flavorsToFlavorResponses(orderFlavorsByOnSale(flavors));
     }
 
     public List<FlavorResponse> getFlavorsByKeywordEN(String keywordEN) {
         List<Flavor> flavors = flavorRepository.findByNameENContainingIgnoreCase(keywordEN);
-        return flavorsToFlavorResponses(flavors);
+        return flavorsToFlavorResponses(orderFlavorsByOnSale(flavors));
     }
 
     public List<FlavorResponse> getFlavorsOrderByNameKR() {
         List<Flavor> flavors = flavorRepository.findAll(Sort.by("nameKR"));
-        return flavorsToFlavorResponses(flavors);
+        return flavorsToFlavorResponses(orderFlavorsByOnSale(flavors));
     }
 
     public List<FlavorResponse> getFlavorsOrderByNameEN() {
         List<Flavor> flavors = flavorRepository.findAll(Sort.by("nameEN"));
-        return flavorsToFlavorResponses(flavors);
+        return flavorsToFlavorResponses(orderFlavorsByOnSale(flavors));
     }
 
     public List<FlavorResponse> getFlavorsOrderByKcal() {
         List<Flavor> flavors = flavorRepository.findAll(Sort.by("kcal"));
-        return flavorsToFlavorResponses(flavors);
+        return flavorsToFlavorResponses(orderFlavorsByOnSale(flavors));
     }
 
     public List<FlavorResponse> getAllFlavorsFiltered(String baseType1, String baseType2, String toppingType1, String toppingType2,
@@ -318,6 +318,22 @@ public class FlavorService {
         return flavors;
     }
 
+    private List<Flavor> orderFlavorsByOnSale(List<Flavor> flavors) {
+        List<Flavor> orderedFilteredFlavorList = new ArrayList<>();
+        if (!flavors.isEmpty()) {
+            for (Flavor flavor : flavors) {
+                if (flavor.getOnSale().isOnSale()) {
+                    orderedFilteredFlavorList.add(flavor);
+                }
+            }
+            for (Flavor flavor : flavors) {
+                if (!flavor.getOnSale().isOnSale()) {
+                    orderedFilteredFlavorList.add(flavor);
+                }
+            }
+        }
+        return orderedFilteredFlavorList;
+    }
 
     private List<FlavorResponse> flavorsToFlavorResponses(List<Flavor> flavors) {
         List<FlavorResponse> result = new ArrayList<>();
