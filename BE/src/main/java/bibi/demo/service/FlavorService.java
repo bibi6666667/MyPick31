@@ -94,6 +94,42 @@ public class FlavorService {
         return flavorsToFlavorResponses(orderFlavorsByOnSale(flavors));
     }
 
+    public List<FlavorResponse> getFlavorsSherbet() {
+        List<Base> sherbetBaseList = baseRepository.findByIsSherbetTrue();
+        List<Flavor> result = new ArrayList<>();
+        List<FlavorBase> flavorBases = new ArrayList<>();
+        for (Base base : sherbetBaseList) {
+            List<FlavorBase> sherbetFlavorBaseList = flavorBaseRepository.findByBaseId(base.getId());
+            flavorBases.addAll(sherbetFlavorBaseList);
+        }
+        for (FlavorBase flavorBase : flavorBases) {
+            Flavor flavor = flavorRepository.findById(flavorBase.getFlavor().getId()).orElseThrow(NoSuchFlavorException::new);
+            if (!result.contains(flavor)) {
+                System.out.println("샤베트 베이스 " + flavorBase.getBase().getNameKR() + "를 갖는 플레이버 " + flavor.getNameKR());
+                result.add(flavor);
+            }
+        }
+        return flavorsToFlavorResponses(orderFlavorsByOnSale(result));
+    }
+
+    public List<FlavorResponse> getFlavorsSorbet() {
+        List<Base> sorbetBaseList = baseRepository.findByIsSorbetTrue();
+        List<Flavor> result = new ArrayList<>();
+        List<FlavorBase> flavorBases = new ArrayList<>();
+        for (Base base : sorbetBaseList) {
+            List<FlavorBase> sorbetFlavorBaseList = flavorBaseRepository.findByBaseId(base.getId());
+            flavorBases.addAll(sorbetFlavorBaseList);
+        }
+        for (FlavorBase flavorBase : flavorBases) {
+            Flavor flavor = flavorRepository.findById(flavorBase.getFlavor().getId()).orElseThrow(NoSuchFlavorException::new);
+            if (!result.contains(flavor)) {
+                System.out.println("소르베 베이스 " + flavorBase.getBase().getNameKR() + "를 갖는 플레이버 " + flavor.getNameKR());
+                result.add(flavor);
+            }
+        }
+        return flavorsToFlavorResponses(orderFlavorsByOnSale(result));
+    }
+
     public List<FlavorResponse> getAllFlavorsFiltered(String baseType1, String baseType2, String toppingType1, String toppingType2,
                                                       String syrupType1, String syrupType2, String allergen1, String allergen2) {
         if (baseType1.equals("") && !baseType2.equals("") || toppingType1.equals("") && !toppingType2.equals("")
@@ -211,23 +247,7 @@ public class FlavorService {
         return flavorsToFlavorResponses(orderFlavorsByOnSale(filteredFlavorList));
     }
 
-    private <T> List<T> getIntersectionOfTwoSet(List<T> set1, List<T> set2) {
-        set1.retainAll(set2);
-        return set1;
-    }
 
-    private <T> List<T> getIntersectionOfThreeSet(List<T> set1, List<T> set2, List<T> set3) {
-        set1.retainAll(set2);
-        set1.retainAll(set3);
-        return set1;
-    }
-
-    private <T> List<T> getIntersectionOfFourSet(List<T> set1, List<T> set2, List<T> set3, List<T> set4) {
-        set1.retainAll(set2);
-        set1.retainAll(set3);
-        set1.retainAll(set4);
-        return set1;
-    }
 
     private List<Flavor> getFlavorsFilteredByBaseType(String baseType) {
         List<Flavor> flavors = new ArrayList<>();
@@ -391,5 +411,23 @@ public class FlavorService {
             result.add(AllergenResponse.toAllergenResponse(allergen));
         }
         return result;
+    }
+
+    private <T> List<T> getIntersectionOfTwoSet(List<T> set1, List<T> set2) {
+        set1.retainAll(set2);
+        return set1;
+    }
+
+    private <T> List<T> getIntersectionOfThreeSet(List<T> set1, List<T> set2, List<T> set3) {
+        set1.retainAll(set2);
+        set1.retainAll(set3);
+        return set1;
+    }
+
+    private <T> List<T> getIntersectionOfFourSet(List<T> set1, List<T> set2, List<T> set3, List<T> set4) {
+        set1.retainAll(set2);
+        set1.retainAll(set3);
+        set1.retainAll(set4);
+        return set1;
     }
 }

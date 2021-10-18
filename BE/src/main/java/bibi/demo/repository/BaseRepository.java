@@ -14,4 +14,8 @@ public interface BaseRepository extends CrudRepository<Base, Long> {
     Optional<Base> findById(Long id);
 
     List<Base> findByBaseTypeId(Long baseTypeId);
+
+    List<Base> findByIsSherbetTrue();
+
+    List<Base> findByIsSorbetTrue();
 }

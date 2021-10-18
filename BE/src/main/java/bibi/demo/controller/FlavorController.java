@@ -51,6 +51,16 @@ public class FlavorController {
         return flavorService.getFlavorsSignature();
     }
 
+    @GetMapping("/sherbet")
+    public List<FlavorResponse> showFlavorSherbet() {
+        return flavorService.getFlavorsSherbet();
+    }
+
+    @GetMapping("/sorbet")
+    public List<FlavorResponse> showFlavorSorbet() {
+        return flavorService.getFlavorsSorbet();
+    }
+
     @GetMapping(params = {"baseType1", "baseType2", "toppingType1", "toppingType2",
             "syrupType1", "syrupType2", "allergen1", "allergen2"})
     public List<FlavorResponse> showFlavorFiltered(@RequestParam("baseType1") String baseType1,
