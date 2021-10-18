@@ -22,4 +22,6 @@ public interface FlavorRepository extends CrudRepository<Flavor, Long> {
 
     @Override
     Optional<Flavor> findById(Long id);
+
+    List<Flavor> findByIsSignatureTrue();
 }

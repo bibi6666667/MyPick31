@@ -89,6 +89,11 @@ public class FlavorService {
         return flavorsToFlavorResponses(orderFlavorsByOnSale(flavors));
     }
 
+    public List<FlavorResponse> getFlavorsSignature() {
+        List<Flavor> flavors = flavorRepository.findByIsSignatureTrue();
+        return flavorsToFlavorResponses(orderFlavorsByOnSale(flavors));
+    }
+
     public List<FlavorResponse> getAllFlavorsFiltered(String baseType1, String baseType2, String toppingType1, String toppingType2,
                                                       String syrupType1, String syrupType2, String allergen1, String allergen2) {
         if (baseType1.equals("") && !baseType2.equals("") || toppingType1.equals("") && !toppingType2.equals("")
@@ -236,7 +241,7 @@ public class FlavorService {
         // 그 베이스들을 갖는 플레이버베이스 찾기
         List<FlavorBase> flavorBases = new ArrayList<>();
         for (Base base : bases) {
-            List<FlavorBase> flavorBasesByBaseId = flavorBaseRepository.findFlavorBasesByBaseId(base.getId());
+            List<FlavorBase> flavorBasesByBaseId = flavorBaseRepository.findByBaseId(base.getId());
             flavorBases.addAll(flavorBasesByBaseId);
         }
 
