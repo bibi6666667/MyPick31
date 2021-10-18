@@ -1,12 +1,15 @@
 package bibi.demo.response;
 
 import bibi.demo.domain.Allergen;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 @Getter
 public class AllergenResponse {
 
+    @JsonIgnore
     private Long id;
+
     private String nameKR;
     private String nameEN;
 

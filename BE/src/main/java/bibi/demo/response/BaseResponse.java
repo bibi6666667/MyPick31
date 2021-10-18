@@ -1,16 +1,23 @@
 package bibi.demo.response;
 
 import bibi.demo.domain.Base;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 @Getter
 public class BaseResponse {
 
+    @JsonIgnore
     private Long id;
+
     private String nameKR;
     private String nameEN;
+
+    @JsonIgnore
     private boolean isSherbet;
+    @JsonIgnore
     private boolean isSorbet;
+    @JsonIgnore
     private Long baseTypeId;
 
     public BaseResponse(Long id, String nameKR, String nameEN,

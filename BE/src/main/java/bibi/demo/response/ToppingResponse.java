@@ -1,14 +1,19 @@
 package bibi.demo.response;
 
 import bibi.demo.domain.Topping;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 @Getter
 public class ToppingResponse {
 
+    @JsonIgnore
     private Long id;
+
     private String nameKR;
     private String nameEN;
+
+    @JsonIgnore
     private Long toppingTypeId;
 
     public ToppingResponse(Long id, String nameKR, String nameEN, Long toppingTypeId) {

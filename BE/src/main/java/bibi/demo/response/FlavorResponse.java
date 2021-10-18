@@ -4,6 +4,7 @@ import bibi.demo.domain.Image;
 import bibi.demo.domain.Info;
 import bibi.demo.domain.OnSale;
 import bibi.demo.domain.flavor.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import java.util.List;
@@ -11,7 +12,9 @@ import java.util.List;
 @Getter
 public class FlavorResponse {
 
+    @JsonIgnore
     private Long id;
+
     private String nameKR;
     private String nameEN;
     private int kcal;

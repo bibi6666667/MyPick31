@@ -1,13 +1,19 @@
 package bibi.demo.response;
 
 import bibi.demo.domain.Syrup;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 @Getter
 public class SyrupResponse {
+
+    @JsonIgnore
     private Long id;
+
     private String nameKR;
     private String nameEN;
+
+    @JsonIgnore
     private Long syrupTypeId;
 
     public SyrupResponse(Long id, String nameKR, String nameEN, Long syrupTypeId) {
