@@ -328,8 +328,11 @@ public class FlavorService {
     }
 
     private FlavorResponse flavorToFlavorResponse(Flavor flavor) {
-        return new FlavorResponse(flavor.getId(), flavor.getNameKR(), flavor.getNameEN(), flavor.getKcal(),
-                flavor.isSignature(), flavor.getInfo(), flavor.getImage(), flavor.getOnSale(),
+        return new FlavorResponse(flavor.getId(), flavor.getNameKR(), flavor.getNameEN(),
+                flavor.getKcal(), flavor.isSignature(),
+                InfoResponse.toInfoResponse(flavor.getInfo()),
+                ImageResponse.toImageResponse(flavor.getImage()),
+                OnSaleResponse.toOnSaleResponse(flavor.getOnSale()),
                 flavorBasesToBaseResponses(flavor.getFlavorBases()),
                 flavorToppingsToToppingResponses(flavor.getFlavorToppings()),
                 flavorSyrupsToSyrupResponses(flavor.getFlavorSyrups()),
