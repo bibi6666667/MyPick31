@@ -5,6 +5,7 @@ import bibi.demo.domain.Base;
 import bibi.demo.domain.Syrup;
 import bibi.demo.domain.Topping;
 import bibi.demo.domain.flavor.*;
+import bibi.demo.exception.IllegalAccessException;
 import bibi.demo.repository.*;
 import bibi.demo.repository.type.BaseTypeRepository;
 import bibi.demo.repository.type.SyrupTypeRepository;
@@ -97,9 +98,10 @@ public class FlavorService {
             // throw new IllegalAccessException();
         }
 
+        // 아무것도 입력하지 않은 경우
         if (baseType1.equals("") && baseType2.equals("") && toppingType1.equals("") && toppingType2.equals("")
                 && syrupType1.equals("") && syrupType2.equals("") && allergen1.equals("") && allergen2.equals("")) {
-            getAllFlavors();
+            return getAllFlavors();
         }
 
         // 타입2까지 지정된 경우, 타입1&타입2 끼리의 교집합 구하기
@@ -124,7 +126,7 @@ public class FlavorService {
             flavorsFilteredByAllergen.retainAll(flavorsFilteredByAllergen2);
         }
 
-        List<Flavor> result = new ArrayList<>();
+        List<Flavor> filteredFlavorList = new ArrayList<>();
         boolean isBaseTypeEmpty = flavorsFilteredByBaseType.isEmpty();
         boolean isToppingTypeEmpty = flavorsFilteredByToppingType.isEmpty();
         boolean isSyrupTypeEmpty = flavorsFilteredBySyrupType.isEmpty();
@@ -132,72 +134,72 @@ public class FlavorService {
 
         // i) 베이스타입/토핑타입/시럽타입/알러전 중 한 개만 입력
         if (!isBaseTypeEmpty && isToppingTypeEmpty && isSyrupTypeEmpty && isAllergenTypeEmpty) { // 베이스
-            result.addAll(flavorsFilteredByBaseType);
+            filteredFlavorList.addAll(flavorsFilteredByBaseType);
         }
         if (isBaseTypeEmpty && !isToppingTypeEmpty && isSyrupTypeEmpty && isAllergenTypeEmpty) { // 토핑
-            result.addAll(flavorsFilteredByToppingType);
+            filteredFlavorList.addAll(flavorsFilteredByToppingType);
         }
         if (isBaseTypeEmpty && isToppingTypeEmpty && !isSyrupTypeEmpty && isAllergenTypeEmpty) { // 시럽
-            result.addAll(flavorsFilteredBySyrupType);
+            filteredFlavorList.addAll(flavorsFilteredBySyrupType);
         }
         if (isBaseTypeEmpty && isToppingTypeEmpty && isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 알러전
-            result.addAll(flavorsFilteredByAllergen);
+            filteredFlavorList.addAll(flavorsFilteredByAllergen);
         }
         // ii) 베이스타입/토핑타입/시럽타입/알러전 중 두 개 입력
         if (!isBaseTypeEmpty && !isToppingTypeEmpty && isSyrupTypeEmpty && isAllergenTypeEmpty) { // 베이스, 토핑
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
             baseFilteredFlavors.retainAll(flavorsFilteredByToppingType);
-            result.addAll(baseFilteredFlavors);
+            filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (!isBaseTypeEmpty && isToppingTypeEmpty && !isSyrupTypeEmpty && isAllergenTypeEmpty) { // 베이스, 시럽
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
             baseFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
-            result.addAll(baseFilteredFlavors);
+            filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (!isBaseTypeEmpty && isToppingTypeEmpty && isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 베이스, 알러전
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
             baseFilteredFlavors.retainAll(flavorsFilteredByAllergen);
-            result.addAll(baseFilteredFlavors);
+            filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (isBaseTypeEmpty && !isToppingTypeEmpty && !isSyrupTypeEmpty && isAllergenTypeEmpty) { // 토핑, 시럽
             List<Flavor> toppingFilteredFlavors = new ArrayList<>(flavorsFilteredByToppingType);
             toppingFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
-            result.addAll(toppingFilteredFlavors);
+            filteredFlavorList.addAll(toppingFilteredFlavors);
         }
         if (isBaseTypeEmpty && !isToppingTypeEmpty && isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 토핑, 알러지
             List<Flavor> toppingFilteredFlavors = new ArrayList<>(flavorsFilteredByToppingType);
             toppingFilteredFlavors.retainAll(flavorsFilteredByAllergen);
-            result.addAll(toppingFilteredFlavors);
+            filteredFlavorList.addAll(toppingFilteredFlavors);
         }
         if (isBaseTypeEmpty && isToppingTypeEmpty && !isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 시럽, 알러지
             List<Flavor> syrupFilteredFlavors = new ArrayList<>(flavorsFilteredBySyrupType);
             syrupFilteredFlavors.retainAll(flavorsFilteredByAllergen);
-            result.addAll(syrupFilteredFlavors);
+            filteredFlavorList.addAll(syrupFilteredFlavors);
         }
         // iii) 베이스타입/토핑타입/시럽타입/알러전 중 세 개 입력
         if (!isBaseTypeEmpty && !isToppingTypeEmpty && !isSyrupTypeEmpty && isAllergenTypeEmpty) { // 베이스 토핑 시럽
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
             baseFilteredFlavors.retainAll(flavorsFilteredByToppingType);
             baseFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
-            result.addAll(baseFilteredFlavors);
+            filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (!isBaseTypeEmpty && !isToppingTypeEmpty && isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 베이스 토핑 알러지
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
             baseFilteredFlavors.retainAll(flavorsFilteredByToppingType);
             baseFilteredFlavors.retainAll(flavorsFilteredByAllergen);
-            result.addAll(baseFilteredFlavors);
+            filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (!isBaseTypeEmpty && isToppingTypeEmpty && !isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 베이스 시럽 알러지
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
             baseFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
             baseFilteredFlavors.retainAll(flavorsFilteredByAllergen);
-            result.addAll(baseFilteredFlavors);
+            filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (isBaseTypeEmpty && !isToppingTypeEmpty && !isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 토핑 시럽 알러지
             List<Flavor> toppingFilteredFlavors = new ArrayList<>(flavorsFilteredByToppingType);
             toppingFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
             toppingFilteredFlavors.retainAll(flavorsFilteredByAllergen);
-            result.addAll(toppingFilteredFlavors);
+            filteredFlavorList.addAll(toppingFilteredFlavors);
         }
         // iv) 베이스타입/토핑타입/시럽타입/알러전 모두 입력
         if (!isBaseTypeEmpty && !isToppingTypeEmpty && !isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 베이스 토핑 시럽 알러지
@@ -205,11 +207,23 @@ public class FlavorService {
             baseFilteredFlavors.retainAll(flavorsFilteredByToppingType);
             baseFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
             baseFilteredFlavors.retainAll(flavorsFilteredByAllergen);
-            result.addAll(baseFilteredFlavors);
+            filteredFlavorList.addAll(baseFilteredFlavors);
         }
 
-        // TODO : 판매 중인 플레이버를 앞쪽으로 정렬
-        return flavorsToFlavorResponses(result);
+        List<Flavor> orderedFilteredFlavorList = new ArrayList<>();
+        if (!filteredFlavorList.isEmpty()) {
+            for (Flavor flavor : filteredFlavorList) {
+                if (flavor.getOnSale().isOnSale()) {
+                    orderedFilteredFlavorList.add(flavor);
+                }
+            }
+            for (Flavor flavor : filteredFlavorList) {
+                if (!flavor.getOnSale().isOnSale()) {
+                    orderedFilteredFlavorList.add(flavor);
+                }
+            }
+        }
+        return flavorsToFlavorResponses(orderedFilteredFlavorList);
     }
 
     private List<Flavor> getFlavorsFilteredByBaseType(String baseType) {
