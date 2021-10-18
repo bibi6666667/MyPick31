@@ -1,9 +1,6 @@
 package bibi.demo.service;
 
-import bibi.demo.domain.Allergen;
-import bibi.demo.domain.Base;
-import bibi.demo.domain.Syrup;
-import bibi.demo.domain.Topping;
+import bibi.demo.domain.*;
 import bibi.demo.domain.flavor.*;
 import bibi.demo.exception.NoSuchFlavorException;
 import bibi.demo.exception.NoSuchTypeException;
@@ -108,23 +105,23 @@ public class FlavorService {
         // 타입2까지 지정된 경우, 타입1&타입2 끼리의 교집합 구하기
         List<Flavor> flavorsFilteredByBaseType = getFlavorsFilteredByBaseType(baseType1);
         if (!baseType1.equals("") && !baseType2.equals("")) {
-            List<Flavor> flavorsFilteredByBaseType2 = getFlavorsFilteredByBaseType(baseType2);
-            flavorsFilteredByBaseType.retainAll(flavorsFilteredByBaseType2);
+            flavorsFilteredByBaseType = getIntersectionOfTwoSet(flavorsFilteredByBaseType,
+                    getFlavorsFilteredByBaseType(baseType2));
         }
         List<Flavor> flavorsFilteredByToppingType = getFlavorsFilteredByToppingType(toppingType1);
         if (!toppingType1.equals("") && !toppingType2.equals("")) {
-            List<Flavor> flavorsFilteredByToppingType2 = getFlavorsFilteredByToppingType(toppingType2);
-            flavorsFilteredByToppingType.retainAll(flavorsFilteredByToppingType2);
+            flavorsFilteredByToppingType = getIntersectionOfTwoSet(flavorsFilteredByToppingType,
+                    getFlavorsFilteredByToppingType(toppingType2));
         }
         List<Flavor> flavorsFilteredBySyrupType = getFlavorsFilteredBySyrupType(syrupType1);
         if (!syrupType1.equals("") && !syrupType2.equals("")) {
-            List<Flavor> flavorsFilteredBySyrupType2 = getFlavorsFilteredBySyrupType(syrupType2);
-            flavorsFilteredBySyrupType.retainAll(flavorsFilteredBySyrupType2);
+            flavorsFilteredBySyrupType = getIntersectionOfTwoSet(flavorsFilteredBySyrupType,
+                    getFlavorsFilteredBySyrupType(syrupType2));
         }
         List<Flavor> flavorsFilteredByAllergen = getFlavorsFilteredByAllergen(allergen1);
         if (!allergen1.equals("") && !allergen2.equals("")) {
-            List<Flavor> flavorsFilteredByAllergen2 = getFlavorsFilteredByAllergen(allergen2);
-            flavorsFilteredByAllergen.retainAll(flavorsFilteredByAllergen2);
+            flavorsFilteredByAllergen = getIntersectionOfTwoSet(flavorsFilteredByAllergen,
+                    getFlavorsFilteredByAllergen(allergen2));
         }
 
         List<Flavor> filteredFlavorList = new ArrayList<>();
@@ -149,82 +146,82 @@ public class FlavorService {
         // ii) 베이스타입/토핑타입/시럽타입/알러전 중 두 개 입력
         if (!isBaseTypeEmpty && !isToppingTypeEmpty && isSyrupTypeEmpty && isAllergenTypeEmpty) { // 베이스, 토핑
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
-            baseFilteredFlavors.retainAll(flavorsFilteredByToppingType);
+            baseFilteredFlavors = getIntersectionOfTwoSet(baseFilteredFlavors, flavorsFilteredByToppingType);
             filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (!isBaseTypeEmpty && isToppingTypeEmpty && !isSyrupTypeEmpty && isAllergenTypeEmpty) { // 베이스, 시럽
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
-            baseFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
+            baseFilteredFlavors = getIntersectionOfTwoSet(baseFilteredFlavors, flavorsFilteredBySyrupType);
             filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (!isBaseTypeEmpty && isToppingTypeEmpty && isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 베이스, 알러전
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
-            baseFilteredFlavors.retainAll(flavorsFilteredByAllergen);
+            baseFilteredFlavors = getIntersectionOfTwoSet(baseFilteredFlavors, flavorsFilteredByAllergen);
             filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (isBaseTypeEmpty && !isToppingTypeEmpty && !isSyrupTypeEmpty && isAllergenTypeEmpty) { // 토핑, 시럽
             List<Flavor> toppingFilteredFlavors = new ArrayList<>(flavorsFilteredByToppingType);
-            toppingFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
+            toppingFilteredFlavors = getIntersectionOfTwoSet(toppingFilteredFlavors, flavorsFilteredBySyrupType);
             filteredFlavorList.addAll(toppingFilteredFlavors);
         }
         if (isBaseTypeEmpty && !isToppingTypeEmpty && isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 토핑, 알러지
             List<Flavor> toppingFilteredFlavors = new ArrayList<>(flavorsFilteredByToppingType);
-            toppingFilteredFlavors.retainAll(flavorsFilteredByAllergen);
+            toppingFilteredFlavors = getIntersectionOfTwoSet(toppingFilteredFlavors, flavorsFilteredByAllergen);
             filteredFlavorList.addAll(toppingFilteredFlavors);
         }
         if (isBaseTypeEmpty && isToppingTypeEmpty && !isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 시럽, 알러지
             List<Flavor> syrupFilteredFlavors = new ArrayList<>(flavorsFilteredBySyrupType);
-            syrupFilteredFlavors.retainAll(flavorsFilteredByAllergen);
+            syrupFilteredFlavors = getIntersectionOfTwoSet(syrupFilteredFlavors, flavorsFilteredByAllergen);
             filteredFlavorList.addAll(syrupFilteredFlavors);
         }
         // iii) 베이스타입/토핑타입/시럽타입/알러전 중 세 개 입력
         if (!isBaseTypeEmpty && !isToppingTypeEmpty && !isSyrupTypeEmpty && isAllergenTypeEmpty) { // 베이스 토핑 시럽
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
-            baseFilteredFlavors.retainAll(flavorsFilteredByToppingType);
-            baseFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
+            baseFilteredFlavors = getIntersectionOfThreeSet(baseFilteredFlavors, flavorsFilteredByToppingType, flavorsFilteredBySyrupType);
             filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (!isBaseTypeEmpty && !isToppingTypeEmpty && isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 베이스 토핑 알러지
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
-            baseFilteredFlavors.retainAll(flavorsFilteredByToppingType);
-            baseFilteredFlavors.retainAll(flavorsFilteredByAllergen);
+            baseFilteredFlavors = getIntersectionOfThreeSet(baseFilteredFlavors, flavorsFilteredByToppingType, flavorsFilteredByAllergen);
             filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (!isBaseTypeEmpty && isToppingTypeEmpty && !isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 베이스 시럽 알러지
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
-            baseFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
-            baseFilteredFlavors.retainAll(flavorsFilteredByAllergen);
+            baseFilteredFlavors = getIntersectionOfThreeSet(baseFilteredFlavors, flavorsFilteredBySyrupType, flavorsFilteredByAllergen);
             filteredFlavorList.addAll(baseFilteredFlavors);
         }
         if (isBaseTypeEmpty && !isToppingTypeEmpty && !isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 토핑 시럽 알러지
             List<Flavor> toppingFilteredFlavors = new ArrayList<>(flavorsFilteredByToppingType);
-            toppingFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
-            toppingFilteredFlavors.retainAll(flavorsFilteredByAllergen);
+            toppingFilteredFlavors = getIntersectionOfThreeSet(toppingFilteredFlavors, flavorsFilteredBySyrupType, flavorsFilteredByAllergen);
             filteredFlavorList.addAll(toppingFilteredFlavors);
         }
         // iv) 베이스타입/토핑타입/시럽타입/알러전 모두 입력
         if (!isBaseTypeEmpty && !isToppingTypeEmpty && !isSyrupTypeEmpty && !isAllergenTypeEmpty) { // 베이스 토핑 시럽 알러지
             List<Flavor> baseFilteredFlavors = new ArrayList<>(flavorsFilteredByBaseType);
-            baseFilteredFlavors.retainAll(flavorsFilteredByToppingType);
-            baseFilteredFlavors.retainAll(flavorsFilteredBySyrupType);
-            baseFilteredFlavors.retainAll(flavorsFilteredByAllergen);
+            baseFilteredFlavors = getIntersectionOfFourSet(baseFilteredFlavors, flavorsFilteredByToppingType,
+                    flavorsFilteredBySyrupType, flavorsFilteredByAllergen);
             filteredFlavorList.addAll(baseFilteredFlavors);
         }
 
-        List<Flavor> orderedFilteredFlavorList = new ArrayList<>();
-        if (!filteredFlavorList.isEmpty()) {
-            for (Flavor flavor : filteredFlavorList) {
-                if (flavor.getOnSale().isOnSale()) {
-                    orderedFilteredFlavorList.add(flavor);
-                }
-            }
-            for (Flavor flavor : filteredFlavorList) {
-                if (!flavor.getOnSale().isOnSale()) {
-                    orderedFilteredFlavorList.add(flavor);
-                }
-            }
-        }
-        return flavorsToFlavorResponses(orderedFilteredFlavorList);
+        return flavorsToFlavorResponses(orderFlavorsByOnSale(filteredFlavorList));
+    }
+
+    private <T> List<T> getIntersectionOfTwoSet(List<T> set1, List<T> set2) {
+        set1.retainAll(set2);
+        return set1;
+    }
+
+    private <T> List<T> getIntersectionOfThreeSet(List<T> set1, List<T> set2, List<T> set3) {
+        set1.retainAll(set2);
+        set1.retainAll(set3);
+        return set1;
+    }
+
+    private <T> List<T> getIntersectionOfFourSet(List<T> set1, List<T> set2, List<T> set3, List<T> set4) {
+        set1.retainAll(set2);
+        set1.retainAll(set3);
+        set1.retainAll(set4);
+        return set1;
     }
 
     private List<Flavor> getFlavorsFilteredByBaseType(String baseType) {
