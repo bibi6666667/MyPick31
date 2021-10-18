@@ -5,7 +5,9 @@ import bibi.demo.domain.Base;
 import bibi.demo.domain.Syrup;
 import bibi.demo.domain.Topping;
 import bibi.demo.domain.flavor.*;
-import bibi.demo.exception.IllegalAccessException;
+import bibi.demo.exception.NoSuchFlavorException;
+import bibi.demo.exception.NoSuchTypeException;
+import bibi.demo.exception.TypeInputException;
 import bibi.demo.repository.*;
 import bibi.demo.repository.type.BaseTypeRepository;
 import bibi.demo.repository.type.SyrupTypeRepository;
@@ -92,10 +94,9 @@ public class FlavorService {
 
     public List<FlavorResponse> getAllFlavorsFiltered(String baseType1, String baseType2, String toppingType1, String toppingType2,
                                                       String syrupType1, String syrupType2, String allergen1, String allergen2) {
-        // TODO : 타입1이 비어 있고 타입2만 있을 때 예외 발생시키기
         if (baseType1.equals("") && !baseType2.equals("") || toppingType1.equals("") && !toppingType2.equals("")
                 || syrupType1.equals("") && !syrupType2.equals("") || allergen1.equals("") && !allergen2.equals("")) {
-            // throw new IllegalAccessException();
+            throw new TypeInputException();
         }
 
         // 아무것도 입력하지 않은 경우
@@ -231,7 +232,7 @@ public class FlavorService {
         if (baseType.equals("")) return flavors;
 
         // 그 베이스 타입의 베이스타입ID 찾기
-        Long baseTypeId = baseTypeRepository.findIdByNameKR(baseType).orElseThrow(NoSuchElementException::new);
+        Long baseTypeId = baseTypeRepository.findIdByNameKR(baseType).orElseThrow(NoSuchTypeException::new);
         // 그 베이스타입ID를 갖는 베이스들 찾기
         List<Base> bases = baseRepository.findByBaseTypeId(baseTypeId);
 
@@ -244,7 +245,7 @@ public class FlavorService {
 
         // 플레이버베이스로 그 베이스들을 갖는 플레이버 찾기
         for (FlavorBase flavorBase : flavorBases) {
-            Flavor flavor = flavorRepository.findById(flavorBase.getFlavor().getId()).orElseThrow(NoSuchElementException::new);
+            Flavor flavor = flavorRepository.findById(flavorBase.getFlavor().getId()).orElseThrow(NoSuchFlavorException::new);
             if (!flavors.contains(flavor)) { // 중복 제거
                 System.out.println(flavorBase.getBase().getNameKR() + "를 베이스로 갖는 플레이버 " + flavor.getNameKR());
                 flavors.add(flavor);
@@ -257,7 +258,7 @@ public class FlavorService {
         List<Flavor> flavors = new ArrayList<>();
         if (toppingType.equals("")) return flavors;
 
-        Long toppingTypeId = toppingTypeRepository.findIdByNameKR(toppingType).orElseThrow(NoSuchElementException::new);
+        Long toppingTypeId = toppingTypeRepository.findIdByNameKR(toppingType).orElseThrow(NoSuchTypeException::new);
         List<Topping> toppings = toppingRepository.findByToppingTypeId(toppingTypeId);
 
         List<FlavorTopping> flavorToppings = new ArrayList<>();
@@ -267,7 +268,7 @@ public class FlavorService {
         }
 
         for (FlavorTopping flavorTopping : flavorToppings) {
-            Flavor flavor = flavorRepository.findById(flavorTopping.getFlavor().getId()).orElseThrow(NoSuchElementException::new);
+            Flavor flavor = flavorRepository.findById(flavorTopping.getFlavor().getId()).orElseThrow(NoSuchFlavorException::new);
             if (!flavors.contains(flavor)) {
                 System.out.println(flavorTopping.getTopping().getNameKR() + "를 토핑으로 갖는 플레이버 " + flavor.getNameKR());
                 flavors.add(flavor);
@@ -280,7 +281,7 @@ public class FlavorService {
         List<Flavor> flavors = new ArrayList<>();
         if (syrupType.equals("")) return flavors;
 
-        Long syrupTypeId = syrupTypeRepository.findIdByNameKR(syrupType).orElseThrow(NoSuchElementException::new);
+        Long syrupTypeId = syrupTypeRepository.findIdByNameKR(syrupType).orElseThrow(NoSuchTypeException::new);
         List<Syrup> syrups = syrupRepository.findBySyrupTypeId(syrupTypeId);
 
         List<FlavorSyrup> flavorSyrups = new ArrayList<>();
@@ -290,7 +291,7 @@ public class FlavorService {
         }
 
         for (FlavorSyrup flavorSyrup : flavorSyrups) {
-            Flavor flavor = flavorRepository.findById(flavorSyrup.getFlavor().getId()).orElseThrow(NoSuchElementException::new);
+            Flavor flavor = flavorRepository.findById(flavorSyrup.getFlavor().getId()).orElseThrow(NoSuchFlavorException::new);
             if (!flavors.contains(flavor)) {
                 System.out.println(flavorSyrup.getSyrup().getNameKR() + "를 시럽으로 갖는 플레이버 " + flavor.getNameKR());
                 flavors.add(flavor);
@@ -303,12 +304,12 @@ public class FlavorService {
         List<Flavor> flavors = new ArrayList<>();
         if (allergen.equals("")) return flavors;
 
-        Long allergenId = allergenRepository.findIdByNameKR(allergen).orElseThrow(NoSuchElementException::new);
+        Long allergenId = allergenRepository.findIdByNameKR(allergen).orElseThrow(NoSuchTypeException::new);
 
         List<FlavorAllergen> flavorAllergens = flavorAllergenRepository.findByAllergenId(allergenId);
 
         for (FlavorAllergen flavorAllergen : flavorAllergens) {
-            Flavor flavor = flavorRepository.findById(flavorAllergen.getFlavor().getId()).orElseThrow(NoSuchElementException::new);
+            Flavor flavor = flavorRepository.findById(flavorAllergen.getFlavor().getId()).orElseThrow(NoSuchFlavorException::new);
             if (!flavors.contains(flavor)) {
                 System.out.println(flavorAllergen.getAllergen().getNameKR() + " 알레르기 성분을 갖는 플레이버 " + flavor.getNameKR());
                 flavors.add(flavor);
