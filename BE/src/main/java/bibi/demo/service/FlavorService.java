@@ -94,6 +94,11 @@ public class FlavorService {
         return flavorsToFlavorResponses(orderFlavorsByOnSale(flavors));
     }
 
+    public List<FlavorResponse> getFlavorsOnSale() {
+        List<Flavor> flavors = flavorRepository.findByOnSaleTrue();
+        return flavorsToFlavorResponses(flavors);
+    }
+
     public List<FlavorResponse> getFlavorsSherbet() {
         List<Base> sherbetBaseList = baseRepository.findByIsSherbetTrue();
         List<Flavor> result = new ArrayList<>();
