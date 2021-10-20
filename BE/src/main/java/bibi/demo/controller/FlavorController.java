@@ -1,74 +1,85 @@
 package bibi.demo.controller;
 
-import bibi.demo.response.FlavorResponse;
+import bibi.demo.response.ApiResponse;
+import bibi.demo.response.StatusEnum;
 import bibi.demo.service.FlavorService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/flavor")
 public class FlavorController {
 
-    private FlavorService flavorService;
+    private final FlavorService flavorService;
 
     public FlavorController(FlavorService flavorService) {
         this.flavorService = flavorService;
     }
 
     @GetMapping()
-    public List<FlavorResponse> showAllFlavor() {
-        return flavorService.getAllFlavors();
+    public ResponseEntity<ApiResponse> showAllFlavor() {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getAllFlavors());
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/kr/{keywordKR}")
-    public List<FlavorResponse> showFlavorByKeywordKR(@PathVariable("keywordKR") String keywordKR) {
-        return flavorService.getFlavorsByKeywordKR(keywordKR);
+    public ResponseEntity<ApiResponse> showFlavorByKeywordKR(@PathVariable("keywordKR") String keywordKR) {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getFlavorsByKeywordKR(keywordKR));
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/en/{keywordEN}")
-    public List<FlavorResponse> showFlavorByKeywordEN(@PathVariable("keywordEN") String keywordEN) {
-        return flavorService.getFlavorsByKeywordEN(keywordEN);
+    public ResponseEntity<ApiResponse> showFlavorByKeywordEN(@PathVariable("keywordEN") String keywordEN) {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getFlavorsByKeywordEN(keywordEN));
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/order/kr")
-    public List<FlavorResponse> showFlavorOrderByNameKR() {
-        return flavorService.getFlavorsOrderByNameKR();
+    public ResponseEntity<ApiResponse> showFlavorOrderByNameKR() {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getFlavorsOrderByNameKR());
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/order/en")
-    public List<FlavorResponse> showFlavorOrderByNameEN() {
-        return flavorService.getFlavorsOrderByNameEN();
+    public ResponseEntity<ApiResponse> showFlavorOrderByNameEN() {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getFlavorsOrderByNameEN());
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/order/kcal")
-    public List<FlavorResponse> showFlavorOrderByKcal() {
-        return flavorService.getFlavorsOrderByKcal();
+    public ResponseEntity<ApiResponse> showFlavorOrderByKcal() {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getFlavorsOrderByKcal());
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/signature")
-    public List<FlavorResponse> showFlavorSignature() {
-        return flavorService.getFlavorsSignature();
+    public ResponseEntity<ApiResponse> showFlavorSignature() {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getFlavorsSignature());
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/sherbet")
-    public List<FlavorResponse> showFlavorSherbet() {
-        return flavorService.getFlavorsSherbet();
+    public ResponseEntity<ApiResponse> showFlavorSherbet() {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getFlavorsSherbet());
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/sorbet")
-    public List<FlavorResponse> showFlavorSorbet() {
-        return flavorService.getFlavorsSorbet();
+    public ResponseEntity<ApiResponse> showFlavorSorbet() {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getFlavorsSorbet());
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/on-sale")
-    public List<FlavorResponse> showFlavorOnSale() {
-        return flavorService.getFlavorsOnSale();
+    public ResponseEntity<ApiResponse> showFlavorOnSale() {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getFlavorsOnSale());
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping(params = {"base-type1", "base-type2", "topping-type1", "topping-type2",
             "syrup-type1", "syrup-type2", "allergen1", "allergen2"})
-    public List<FlavorResponse> showFlavorFiltered(@RequestParam("base-type1") String baseType1,
+    public ResponseEntity<ApiResponse> showFlavorFiltered(@RequestParam("base-type1") String baseType1,
                                                    @RequestParam("base-type2") String baseType2,
                                                    @RequestParam("topping-type1") String toppingType1,
                                                    @RequestParam("topping-type2") String toppingType2,
@@ -76,8 +87,9 @@ public class FlavorController {
                                                    @RequestParam("syrup-type2") String syrupType2,
                                                    @RequestParam("allergen1") String allergen1,
                                                    @RequestParam("allergen2") String allergen2) {
-        return flavorService.getAllFlavorsFiltered(baseType1, baseType2, toppingType1, toppingType2,
-                syrupType1, syrupType2, allergen1, allergen2);
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getAllFlavorsFiltered(baseType1, baseType2,
+                toppingType1, toppingType2, syrupType1, syrupType2, allergen1, allergen2));
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
 }
