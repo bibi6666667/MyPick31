@@ -110,7 +110,6 @@ public class FlavorService {
         for (FlavorBase flavorBase : flavorBases) {
             Flavor flavor = flavorRepository.findById(flavorBase.getFlavor().getId()).orElseThrow(NoSuchFlavorException::new);
             if (!result.contains(flavor)) {
-                System.out.println("샤베트 베이스 " + flavorBase.getBase().getNameKR() + "를 갖는 플레이버 " + flavor.getNameKR());
                 result.add(flavor);
             }
         }
@@ -128,7 +127,6 @@ public class FlavorService {
         for (FlavorBase flavorBase : flavorBases) {
             Flavor flavor = flavorRepository.findById(flavorBase.getFlavor().getId()).orElseThrow(NoSuchFlavorException::new);
             if (!result.contains(flavor)) {
-                System.out.println("소르베 베이스 " + flavorBase.getBase().getNameKR() + "를 갖는 플레이버 " + flavor.getNameKR());
                 result.add(flavor);
             }
         }
