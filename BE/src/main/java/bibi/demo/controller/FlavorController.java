@@ -66,16 +66,16 @@ public class FlavorController {
         return flavorService.getFlavorsOnSale();
     }
 
-    @GetMapping(params = {"base-type-1", "base-type-2", "topping-type-1", "topping-type-2",
-            "syrup-type-1", "syrup-type-2", "allergen-1", "allergen-2"})
-    public List<FlavorResponse> showFlavorFiltered(@RequestParam("base-type-1") String baseType1,
-                                                   @RequestParam("base-type-2") String baseType2,
-                                                   @RequestParam("topping-type-1") String toppingType1,
-                                                   @RequestParam("topping-type-2") String toppingType2,
-                                                   @RequestParam("syrup-type-1") String syrupType1,
-                                                   @RequestParam("syrup-type-2") String syrupType2,
-                                                   @RequestParam("allergen-1") String allergen1,
-                                                   @RequestParam("allergen-2") String allergen2) {
+    @GetMapping(params = {"base-type1", "base-type2", "topping-type1", "topping-type2",
+            "syrup-type1", "syrup-type2", "allergen1", "allergen2"})
+    public List<FlavorResponse> showFlavorFiltered(@RequestParam("base-type1") String baseType1,
+                                                   @RequestParam("base-type2") String baseType2,
+                                                   @RequestParam("topping-type1") String toppingType1,
+                                                   @RequestParam("topping-type2") String toppingType2,
+                                                   @RequestParam("syrup-type1") String syrupType1,
+                                                   @RequestParam("syrup-type2") String syrupType2,
+                                                   @RequestParam("allergen1") String allergen1,
+                                                   @RequestParam("allergen2") String allergen2) {
         return flavorService.getAllFlavorsFiltered(baseType1, baseType2, toppingType1, toppingType2,
                 syrupType1, syrupType2, allergen1, allergen2);
     }
