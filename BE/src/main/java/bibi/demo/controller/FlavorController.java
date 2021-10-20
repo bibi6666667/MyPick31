@@ -2,10 +2,7 @@ package bibi.demo.controller;
 
 import bibi.demo.response.FlavorResponse;
 import bibi.demo.service.FlavorService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,4 +45,39 @@ public class FlavorController {
     public List<FlavorResponse> showFlavorOrderByKcal() {
         return flavorService.getFlavorsOrderByKcal();
     }
+
+    @GetMapping("/signature")
+    public List<FlavorResponse> showFlavorSignature() {
+        return flavorService.getFlavorsSignature();
+    }
+
+    @GetMapping("/sherbet")
+    public List<FlavorResponse> showFlavorSherbet() {
+        return flavorService.getFlavorsSherbet();
+    }
+
+    @GetMapping("/sorbet")
+    public List<FlavorResponse> showFlavorSorbet() {
+        return flavorService.getFlavorsSorbet();
+    }
+
+    @GetMapping("/on-sale")
+    public List<FlavorResponse> showFlavorOnSale() {
+        return flavorService.getFlavorsOnSale();
+    }
+
+    @GetMapping(params = {"base-type1", "base-type2", "topping-type1", "topping-type2",
+            "syrup-type1", "syrup-type2", "allergen1", "allergen2"})
+    public List<FlavorResponse> showFlavorFiltered(@RequestParam("base-type1") String baseType1,
+                                                   @RequestParam("base-type2") String baseType2,
+                                                   @RequestParam("topping-type1") String toppingType1,
+                                                   @RequestParam("topping-type2") String toppingType2,
+                                                   @RequestParam("syrup-type1") String syrupType1,
+                                                   @RequestParam("syrup-type2") String syrupType2,
+                                                   @RequestParam("allergen1") String allergen1,
+                                                   @RequestParam("allergen2") String allergen2) {
+        return flavorService.getAllFlavorsFiltered(baseType1, baseType2, toppingType1, toppingType2,
+                syrupType1, syrupType2, allergen1, allergen2);
+    }
+
 }

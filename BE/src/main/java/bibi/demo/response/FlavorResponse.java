@@ -1,9 +1,5 @@
 package bibi.demo.response;
 
-import bibi.demo.domain.Image;
-import bibi.demo.domain.Info;
-import bibi.demo.domain.OnSale;
-import bibi.demo.domain.flavor.*;
 import lombok.Getter;
 
 import java.util.List;
@@ -16,16 +12,16 @@ public class FlavorResponse {
     private String nameEN;
     private int kcal;
     private boolean isSignature;
-    private Info info;
-    private Image image;
-    private OnSale onSale;
+    private InfoResponse info;
+    private ImageResponse image;
+    private OnSaleResponse onSale;
     private List<BaseResponse> baseList;
     private List<ToppingResponse> toppingList;
     private List<SyrupResponse> syrupList;
     private List<AllergenResponse> allergenList;
 
     public FlavorResponse(Long id, String nameKR, String nameEN, int kcal, boolean isSignature,
-                          Info info, Image image, OnSale onSale,
+                          InfoResponse info, ImageResponse image, OnSaleResponse onSale,
                           List<BaseResponse> baseList, List<ToppingResponse> toppingList, List<SyrupResponse> syrupList, List<AllergenResponse> allergenList) {
         this.id = id;
         this.nameKR = nameKR;

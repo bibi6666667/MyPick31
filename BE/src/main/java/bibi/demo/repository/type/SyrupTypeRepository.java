@@ -1,6 +1,6 @@
-package bibi.demo.repository;
+package bibi.demo.repository.type;
 
-import bibi.demo.domain.Allergen;
+import bibi.demo.domain.type.SyrupType;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -9,11 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AllergenRepository extends CrudRepository<Allergen, Long> {
+public interface SyrupTypeRepository extends CrudRepository<SyrupType, Long> {
 
-    @Override
-    Optional<Allergen> findById(Long id);
-
-    @Query(value = "SELECT a.id FROM allergen a WHERE a.name_kr = :nameKR", nativeQuery = true)
+    @Query(value = "SELECT st.id FROM syrup_type st WHERE st.name_kr = :nameKR", nativeQuery = true)
     Optional<Long> findIdByNameKR(@Param("nameKR") String nameKR);
 }
