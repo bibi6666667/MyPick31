@@ -3,10 +3,9 @@ package bibi.demo.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,7 +18,12 @@ public class User {
 
     private String name;
     private String email;
+
+    @Column(name = "access_token")
     private String accessToken;
+
+//    @OneToMany(mappedBy = "user")
+//    private List<Pick> pickList = new ArrayList<>();
 
     public User() {
     }
