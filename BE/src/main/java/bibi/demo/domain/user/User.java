@@ -1,4 +1,4 @@
-package bibi.demo.domain;
+package bibi.demo.domain.user;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +21,12 @@ public class User {
     private String accessToken;
 
     public User() {
+    }
+
+    public User(String name, String email, String accessToken) {
+        this.name = name;
+        this.email = email;
+        this.accessToken = accessToken;
     }
 
     public User(Long id, String name, String email) {
