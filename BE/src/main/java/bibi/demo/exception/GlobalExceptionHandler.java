@@ -20,4 +20,19 @@ public class GlobalExceptionHandler {
     public String handleNoSuchFlavorException(NoSuchTypeException e) {
         return e.getMessage();
     }
+
+    @ExceptionHandler(TokenEmptyException.class)
+    public String handleTokenEmptyException(TokenEmptyException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public String handleTokenExpiredException(TokenExpiredException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public String handleUserNotFoundException(UserNotFoundException e) {
+        return e.getMessage();
+    }
 }
