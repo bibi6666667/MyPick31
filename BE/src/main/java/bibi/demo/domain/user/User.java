@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -21,9 +19,6 @@ public class User {
 
     @Column(name = "access_token")
     private String accessToken;
-
-//    @OneToMany(mappedBy = "user")
-//    private List<Pick> pickList = new ArrayList<>();
 
     public User() {
     }
