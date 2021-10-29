@@ -1,4 +1,4 @@
-package bibi.demo.repository;
+package bibi.demo.repository.flavor;
 
 import bibi.demo.domain.Pick;
 import org.springframework.data.repository.CrudRepository;
