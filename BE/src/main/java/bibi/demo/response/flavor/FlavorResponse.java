@@ -1,4 +1,4 @@
-package bibi.demo.response;
+package bibi.demo.response.flavor;
 
 import lombok.Getter;
 

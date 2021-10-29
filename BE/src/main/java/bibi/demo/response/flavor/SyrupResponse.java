@@ -1,4 +1,4 @@
-package bibi.demo.response;
+package bibi.demo.response.flavor;
 
 import bibi.demo.domain.Syrup;
 import com.fasterxml.jackson.annotation.JsonIgnore;
