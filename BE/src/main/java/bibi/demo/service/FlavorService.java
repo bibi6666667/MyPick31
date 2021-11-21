@@ -5,11 +5,13 @@ import bibi.demo.domain.flavor.*;
 import bibi.demo.exception.NoSuchFlavorException;
 import bibi.demo.exception.NoSuchTypeException;
 import bibi.demo.exception.TypeInputException;
-import bibi.demo.repository.*;
+import bibi.demo.repository.flavor.*;
 import bibi.demo.repository.type.BaseTypeRepository;
 import bibi.demo.repository.type.SyrupTypeRepository;
 import bibi.demo.repository.type.ToppingTypeRepository;
+import bibi.demo.request.PickRequest;
 import bibi.demo.response.*;
+import bibi.demo.response.flavor.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,7 @@ public class FlavorService {
     private final BaseTypeRepository baseTypeRepository;
     private final ToppingTypeRepository toppingTypeRepository;
     private final SyrupTypeRepository syrupTypeRepository;
+    private final PickRepository pickRepository;
 
     public FlavorService(FlavorRepository flavorRepository,
                          BaseRepository baseRepository,
@@ -44,7 +47,8 @@ public class FlavorService {
                          FlavorAllergenRepository flavorAllergenRepository,
                          BaseTypeRepository baseTypeRepository,
                          ToppingTypeRepository toppingTypeRepository,
-                         SyrupTypeRepository syrupTypeRepository) {
+                         SyrupTypeRepository syrupTypeRepository,
+                         PickRepository pickRepository) {
         this.flavorRepository = flavorRepository;
         this.baseRepository = baseRepository;
         this.toppingRepository = toppingRepository;
@@ -57,6 +61,7 @@ public class FlavorService {
         this.baseTypeRepository = baseTypeRepository;
         this.toppingTypeRepository = toppingTypeRepository;
         this.syrupTypeRepository = syrupTypeRepository;
+        this.pickRepository = pickRepository;
     }
 
     public List<FlavorResponse> getAllFlavors() {
@@ -110,7 +115,6 @@ public class FlavorService {
         for (FlavorBase flavorBase : flavorBases) {
             Flavor flavor = flavorRepository.findById(flavorBase.getFlavor().getId()).orElseThrow(NoSuchFlavorException::new);
             if (!result.contains(flavor)) {
-                System.out.println("샤베트 베이스 " + flavorBase.getBase().getNameKR() + "를 갖는 플레이버 " + flavor.getNameKR());
                 result.add(flavor);
             }
         }
@@ -128,7 +132,6 @@ public class FlavorService {
         for (FlavorBase flavorBase : flavorBases) {
             Flavor flavor = flavorRepository.findById(flavorBase.getFlavor().getId()).orElseThrow(NoSuchFlavorException::new);
             if (!result.contains(flavor)) {
-                System.out.println("소르베 베이스 " + flavorBase.getBase().getNameKR() + "를 갖는 플레이버 " + flavor.getNameKR());
                 result.add(flavor);
             }
         }
@@ -252,7 +255,30 @@ public class FlavorService {
         return flavorsToFlavorResponses(orderFlavorsByOnSale(filteredFlavorList));
     }
 
+    // TODO : 픽 추가 조회 삭제 기능 만들기
+    public boolean addPick(PickRequest pickRequest) {
+        if (pickRepository.existsByFlavorIdAndUserId(pickRequest.getFlavorId(), pickRequest.getUserId())) {
+            // throw new 이미 픽한 플레이버 오류
+            return false;
+        }
+        pickRepository.save(new Pick(pickRequest.getFlavorId(), pickRequest.getUserId()));
+        return true;
+    }
 
+    public List<PickResponse> getPicksOfUser(Long userId) {
+        // 로그인한 유저 맞는지 확인??
+        return picksToPickResponse(pickRepository.findByUserId(userId));
+    }
+
+    public boolean cancelPick(Long pickId) {
+        // 로그인한 유저 본인의 픽을 지우는 것인지 확인
+        if (!pickRepository.existsById(pickId)) {
+            // throw new 픽이 존재하지 않음 오류
+            return false;
+        }
+        pickRepository.deleteById(pickId);
+        return true;
+    }
 
     private List<Flavor> getFlavorsFilteredByBaseType(String baseType) {
         List<Flavor> flavors = new ArrayList<>();
@@ -362,6 +388,14 @@ public class FlavorService {
         return orderedFilteredFlavorList;
     }
 
+    private List<PickResponse> picksToPickResponse(List<Pick> picks) {
+        List<PickResponse> result = new ArrayList<>();
+        for (Pick pick : picks) {
+            result.add(PickResponse.toPickResponse(pick));
+        }
+        return result;
+    }
+
     private List<FlavorResponse> flavorsToFlavorResponses(List<Flavor> flavors) {
         List<FlavorResponse> result = new ArrayList<>();
         for (Flavor flavor : flavors) {
@@ -379,7 +413,8 @@ public class FlavorService {
                 flavorBasesToBaseResponses(flavor.getFlavorBases()),
                 flavorToppingsToToppingResponses(flavor.getFlavorToppings()),
                 flavorSyrupsToSyrupResponses(flavor.getFlavorSyrups()),
-                flavorAllergensToAllergenResponses(flavor.getFlavorAllergens()));
+                flavorAllergensToAllergenResponses(flavor.getFlavorAllergens()),
+                pickToPickNum(flavor.getId()));
     }
 
     private List<BaseResponse> flavorBasesToBaseResponses(List<FlavorBase> flavorBases) {
@@ -416,6 +451,10 @@ public class FlavorService {
             result.add(AllergenResponse.toAllergenResponse(allergen));
         }
         return result;
+    }
+
+    private Long pickToPickNum(Long flavorId) {
+        return pickRepository.countByFlavorId(flavorId);
     }
 
     private <T> List<T> getIntersectionOfTwoSet(List<T> set1, List<T> set2) {
