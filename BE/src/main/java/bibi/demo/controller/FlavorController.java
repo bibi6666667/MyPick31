@@ -1,5 +1,6 @@
 package bibi.demo.controller;
 
+import bibi.demo.request.PickRequest;
 import bibi.demo.response.ApiResponse;
 import bibi.demo.response.StatusEnum;
 import bibi.demo.response.flavor.FlavorResponse;
@@ -92,6 +93,27 @@ public class FlavorController {
                                                    @RequestParam("allergen2") String allergen2) {
         ApiResponse<List<FlavorResponse>> apiResponse = new ApiResponse<>(StatusEnum.OK, flavorService.getAllFlavorsFiltered(baseType1, baseType2,
                 toppingType1, toppingType2, syrupType1, syrupType2, allergen1, allergen2));
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    // TODO : 픽 추가 삭제 조회 테스트, JWT로그인 버전으로 업그레이드
+
+    @PostMapping("/pick") // userId 필요. RequestParam?
+    public ResponseEntity<ApiResponse> addPick(PickRequest pickRequest) {
+        // 성공 시 성공, 실패 시 실패 상태 리턴해주기?
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.addPick(pickRequest));
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/pick/{userId}") // userId 필요
+    public ResponseEntity<ApiResponse> getPick(@PathVariable("userId") Long userId) {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.getPicksOfUser(userId));
+        return new ResponseEntity(apiResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/pick/{pickId}") // pickId, userId 필요?
+    public ResponseEntity<ApiResponse> cancelPick(@PathVariable("pickId") Long pickId) {
+        ApiResponse apiResponse = new ApiResponse(StatusEnum.OK, flavorService.cancelPick(pickId));
         return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
 
